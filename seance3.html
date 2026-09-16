@@ -1,0 +1,413 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Animateur — Encre Invisible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --paper:#FFF9F7; --paper-alt:#FBE9EE; --ink:#2B1017; --ink-soft:#6E4552; --ink-faint:#A98995;
+  --brand:#A30E44; --brand-ink:#FFF3F6; --brand-soft:#F6D3DE;
+  --good:#2F7D52; --good-bg:#E3F1E7; --warn:#A9670A; --warn-bg:#FAEED2; --bad:#B23B3B; --bad-bg:#FAE5E3;
+  --line:#F0D5DD; --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,16,23,.05), 0 10px 24px rgba(43,16,23,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+    --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+    --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+    --line:#3A2429; --card:#221519;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+  --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+  --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+  --line:#3A2429; --card:#221519;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Nunito',Arial,sans-serif;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Baloo 2',Georgia,serif;margin:0;}
+
+header{flex:none;display:flex;flex-direction:column;gap:8px;padding:14px 18px calc(10px + env(safe-area-inset-top,0px)) 18px;background:var(--brand);color:var(--brand-ink);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hbrand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;opacity:.92;}
+.hstep{font-weight:700;font-size:13px;opacity:.92;}
+.progress{height:6px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;}
+.progress > i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .35s ease;}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px 18px 28px;}
+.stage{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.stepicon{font-size:44px;text-align:center;}
+.steptitle{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--brand);text-align:center;text-wrap:balance;}
+.stepsub{font-size:14px;color:var(--ink-soft);text-align:center;font-weight:600;}
+
+.say{background:var(--paper-alt);border-left:5px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15.5px;font-weight:700;line-height:1.45;font-style:italic;color:var(--ink);}
+.say .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:5px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.card h3{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+
+.checklist{display:flex;flex-direction:column;gap:2px;}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 4px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14.5px;}
+.citem:hover{background:var(--paper-alt);}
+.citem .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s,border-color .15s;}
+.citem.done .box{background:var(--good);border-color:var(--good);color:#fff;}
+.citem.done span.txt{color:var(--ink-faint);text-decoration:line-through;}
+
+.timerbox{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.timerbig{font-family:'Baloo 2',serif;font-weight:700;font-size:clamp(44px,12vw,64px);color:var(--brand);font-variant-numeric:tabular-nums;}
+.timerbtns{display:flex;gap:10px;}
+
+.quizq{font-size:16px;font-weight:800;text-align:center;margin-bottom:4px;}
+.quizopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{font-family:inherit;font-weight:700;font-size:14.5px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .08s, border-color .15s, background .15s;}
+.qopt:hover{transform:translateY(-1px);}
+.qopt.correct{background:var(--good-bg);border-color:var(--good);}
+.qopt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+.qopt:disabled{cursor:default;}
+.qexplain{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper-alt);border-radius:10px;padding:11px 14px;display:none;}
+.qexplain.show{display:block;}
+
+.vote{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.vote button{font-family:inherit;font-weight:800;font-size:14px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:11px 20px;cursor:pointer;}
+.vote button.picked{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);}
+
+.scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
+
+.vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);}
+
+.bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
+.bigbtn:active{transform:translateY(1px);}
+
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);}
+.navbtn{font-family:'Baloo 2',serif;font-weight:700;font-size:14.5px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 18px;cursor:pointer;}
+.navbtn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent;}
+.navbtn:disabled{opacity:.4;cursor:not-allowed;}
+.dots{display:flex;gap:5px;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.dots i.on{background:var(--brand);}
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="hbrand">🧪 Les P'tits Chimistes</div>
+    <div class="hstep" id="hStep"></div>
+  </div>
+  <div class="progress"><i id="progFill"></i></div>
+</header>
+<main><div class="stage" id="stage"></div></main>
+<footer>
+  <button class="navbtn" id="prevBtn" type="button">◀ Précédent</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="nextBtn" type="button">Suivant ▶</button>
+</footer>
+
+<script>
+(function(){
+  const STEPS = [
+    { kind:'title' },
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"On ne boit jamais le jus de chou rouge, même s'il sent bon. Les pinceaux et coton-tiges restent loin des yeux. On lève la main pour recevoir le jus révélateur.",
+      list:["On ne porte jamais le jus de chou rouge à la bouche","On garde les pinceaux et coton-tiges loin du visage","C'est l'intervenant qui distribue le révélateur, un enfant à la fois"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"On réutilise un maximum de matériel des séances 1 et 2 !",
+      items:["♻️ Bicarbonate de soude (déjà en stock, séance 1)","♻️ Gobelets doseurs et cuillères (déjà en stock)","♻️ Chutes de papier épais de la séance 2 (ou papier blanc classique)","♻️ Éponges et essuie-tout (déjà en stock)","🆕 Chou rouge (1 pour toute la classe, à cuire et filtrer la veille)","🆕 Pinceaux fins ou coton-tiges (un par enfant)","🆕 Petits vaporisateurs ou pinceaux larges pour le révélateur","🆕 Passoire ou étamine pour filtrer le jus de chou"] },
+    { kind:'info', icon:'🧭', title:'Rappel de la méthode', sub:"Avant de commencer · ~2 min",
+      say:"On se souvient de notre démarche de chimiste : on observe, on formule une hypothèse, on expérimente, et on conclut. Aujourd'hui, on va faire apparaître de la magie… avec de la vraie chimie !",
+      list:["Rappeler la démarche du chimiste : observer, essayer, conclure","Rappeler les mots acide et base, vus au volcan en séance 1"] },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–10 min",
+      say:"Je viens d'écrire un mot sur cette feuille avec un pinceau trempé dans de l'eau… et pourtant, on ne voit rien du tout ! À votre avis, comment peut-on faire apparaître un message invisible ?",
+      options:["Avec un crayon très clair","Avec une encre spéciale et un révélateur","C'est impossible"],
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes." },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"10–18 min",
+      say:"Je trempe mon pinceau dans l'encre de bicarbonate, j'écris un mot… il sèche, invisible ! Et maintenant… je passe le jus de chou rouge dessus… regardez !",
+      items:["Tremper le pinceau dans l'eau bicarbonatée et écrire un mot sur le papier","Laisser sécher quelques instants (le message devient invisible)","Passer le jus de chou rouge sur la feuille","Nommer ce qu'on voit : « le message apparaît en vert-bleu ! »","Introduire les mots indicateur et révélateur"] },
+    { kind:'timer', icon:'✍️', title:'Écriture des messages secrets', sub:"18–33 min", seconds:900,
+      say:"À vous ! Trempez votre pinceau ou coton-tige dans l'encre invisible, et écrivez un mot secret ou dessinez un petit symbole sur votre feuille.",
+      list:["Chaque enfant trempe son pinceau dans l'encre de bicarbonate","On écrit un mot court ou un symbole simple sur le papier","On laisse bien sécher avant de passer à la révélation"] },
+    { kind:'timer', icon:'🔮', title:'La révélation magique', sub:"33–45 min", seconds:720,
+      say:"Le moment magique est arrivé ! Je passe le jus de chou rouge sur votre feuille, doucement… et votre message secret apparaît !",
+      list:["Passer le révélateur au pinceau large ou au vaporisateur, une feuille à la fois","Laisser chaque enfant observer l'apparition de son message","Comparer les couleurs obtenues d'une feuille à l'autre"] },
+    { kind:'info', icon:'🧪', title:'Pourquoi ça marche ?', sub:"45–50 min",
+      say:"Le bicarbonate est une base. Le jus de chou rouge est un indicateur naturel : il change de couleur selon qu'il touche un acide ou une base. Au contact du bicarbonate, il devient vert ou bleu — et révèle notre message !",
+      list:["Redire le mot indicateur : un produit qui change de couleur selon ce qu'il touche","Faire le lien avec le volcan de la séance 1 : le bicarbonate est une base, comme avant !"] },
+    { kind:'quiz', icon:'🎓', title:'Quiz des chimistes', sub:"50–56 min · si le temps manque, on le fera la semaine prochaine",
+      questions:[
+        { q:"Notre encre invisible est fabriquée avec…", options:["Du sucre","Du bicarbonate de soude","De la peinture"], correct:1, explain:"L'encre invisible est simplement du bicarbonate de soude dissous dans l'eau." },
+        { q:"Le jus de chou rouge est un indicateur : ça veut dire qu'il…", options:["Change de couleur selon ce qu'il touche","Sent très bon","Rend le papier invisible"], correct:0, explain:"Un indicateur change de couleur au contact d'un acide ou d'une base : c'est ce qui révèle le message !" },
+        { q:"Le bicarbonate de soude, c'est…", options:["Un acide","Une base","Du sel"], correct:1, explain:"Le bicarbonate est une base — le même produit que celui du volcan en séance 1 !" }
+      ] },
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
+      say:"Pourquoi notre message était-il invisible, puis visible ? … Le bicarbonate est incolore une fois sec, et c'est le jus de chou rouge, un indicateur, qui a réagi avec lui pour révéler la couleur !",
+      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer avec leurs mots","Ranger et essuyer le matériel tous ensemble"],
+      timer:240 },
+    { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
+    { kind:'end', icon:'🥛', title:'La semaine prochaine', teaser:"Le Lait Magique — on explore la tension superficielle avec du lait, du colorant et un peu de liquide vaisselle !" }
+  ];
+
+  const STORAGE_KEY = 'encreGuideStep';
+  let idx = 0;
+  try{ const s = parseInt(localStorage.getItem(STORAGE_KEY)||'',10); if(!isNaN(s) && s>=0 && s<STEPS.length) idx = s; }catch(e){}
+
+  let voteCounts = {};
+  let quizState = STEPS.find(s=>s.kind==='quiz') ? STEPS.find(s=>s.kind==='quiz').questions.map(()=>null) : [];
+  const checklistState = {};
+  let AC = null;
+  function beep(){
+    try{
+      AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.18].forEach((d,i)=>{
+        const o=AC.createOscillator(), g=AC.createGain();
+        o.type='triangle'; o.frequency.value = i===0?880:1180;
+        const t=AC.currentTime+d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.18,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.32);
+      });
+    }catch(e){}
+  }
+
+  function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  function renderSayAndList(step){
+    let html = '';
+    if(step.say) html += `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>`;
+    if(step.list) html += `<div class="card"><h3>Consignes</h3><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;font-weight:600;">${step.list.map(l=>`<li>${escapeHtml(l)}</li>`).join('')}</ul></div>`;
+    return html;
+  }
+
+  let timerHandle = null, timerLeft = 0, timerRunning = false;
+  function stopTimer(){ if(timerHandle){ clearInterval(timerHandle); timerHandle=null; } timerRunning=false; }
+  function formatT(s){ const m=Math.floor(s/60), r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
+
+  function renderTimerBlock(seconds){
+    timerLeft = seconds;
+    return `<div class="card timerbox">
+      <h3>Minuteur</h3>
+      <div class="timerbig" id="timerDisp">${formatT(timerLeft)}</div>
+      <div class="timerbtns">
+        <button class="navbtn primary" id="timerStart" type="button">▶ Démarrer</button>
+        <button class="navbtn" id="timerReset" type="button">↺ Réinitialiser</button>
+      </div>
+    </div>`;
+  }
+  function wireTimer(seconds){
+    const disp = document.getElementById('timerDisp');
+    const startBtn = document.getElementById('timerStart');
+    const resetBtn = document.getElementById('timerReset');
+    if(!disp) return;
+    stopTimer();
+    timerLeft = seconds;
+    disp.textContent = formatT(timerLeft);
+    startBtn.addEventListener('click', () => {
+      if(timerRunning){ stopTimer(); startBtn.textContent = '▶ Démarrer'; return; }
+      timerRunning = true; startBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        timerLeft--;
+        if(timerLeft <= 0){ timerLeft = 0; disp.textContent = formatT(0); stopTimer(); startBtn.textContent = '▶ Démarrer'; beep(); return; }
+        disp.textContent = formatT(timerLeft);
+      }, 1000);
+    });
+    resetBtn.addEventListener('click', () => {
+      stopTimer(); timerLeft = seconds; disp.textContent = formatT(timerLeft); startBtn.textContent = '▶ Démarrer';
+    });
+  }
+
+  function render(){
+    const step = STEPS[idx];
+    document.getElementById('hStep').textContent = `Étape ${idx+1} / ${STEPS.length}`;
+    document.getElementById('progFill').style.width = Math.round((idx)/(STEPS.length-1)*100) + '%';
+    const dots = document.getElementById('dots');
+    dots.innerHTML = STEPS.map((_,i)=>`<i class="${i===idx?'on':''}"></i>`).join('');
+    document.getElementById('prevBtn').disabled = idx === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.textContent = idx === STEPS.length-1 ? 'Terminer ✓' : 'Suivant ▶';
+
+    const stage = document.getElementById('stage');
+    let html = '';
+
+    if(step.kind === 'title'){
+      html = `
+        <div class="stepicon">🔍</div>
+        <div class="steptitle">L'Encre Invisible</div>
+        <div class="stepsub">Séance 3 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="card"><h3>Objectif de la séance</h3>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Écrire un message secret avec une encre invisible à base de bicarbonate, et le révéler comme par magie avec un indicateur naturel !</p>
+        </div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">♻️ On recycle notre matériel</span>Cette séance réutilise le bicarbonate, les gobelets doseurs et les chutes de papier des séances 1 et 2 — seul le jus de chou rouge est nouveau !</div>
+        <div class="vocab"><span>Indicateur</span><span>Révélateur</span><span>Acide</span><span>Base</span><span>Réaction chimique</span></div>
+        <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
+      `;
+    } else if(step.kind === 'info'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${step.timer ? renderTimerBlock(step.timer) : ''}
+      `;
+    } else if(step.kind === 'checklist'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="card"><h3>À cocher au fur et à mesure</h3>
+          <div class="checklist">
+            ${step.items.map((it,i)=>{
+              const key = idx+'-'+i;
+              const done = !!checklistState[key];
+              return `<div class="citem ${done?'done':''}" data-key="${key}"><span class="box">${done?'✓':''}</span><span class="txt">${escapeHtml(it)}</span></div>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    } else if(step.kind === 'vote'){
+      const picked = voteCounts[idx];
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>
+        <div class="card">
+          <h3>Vote à main levée</h3>
+          <div class="vote">
+            ${step.options.map((o,i)=>`<button type="button" data-vote="${i}" class="${picked===i?'picked':''}">${escapeHtml(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+      `;
+    } else if(step.kind === 'timer'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${renderTimerBlock(step.seconds)}
+      `;
+    } else if(step.kind === 'quiz'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="scoretag" id="scoreTag"></div>
+        <div id="quizList" style="display:flex;flex-direction:column;gap:18px;"></div>
+      `;
+    } else if(step.kind === 'vocabend'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="stepsub">Vous êtes maintenant de vrais chimistes des indicateurs colorés !</div>
+        <div class="vocab"><span>Indicateur</span><span>Révélateur</span><span>Acide</span><span>Base</span><span>Réaction chimique</span></div>
+      `;
+    } else if(step.kind === 'end'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="card"><p style="margin:0;font-size:15px;font-weight:700;text-align:center;">${escapeHtml(step.teaser)}</p></div>
+      `;
+    }
+
+    stage.innerHTML = html;
+
+    if(step.kind === 'title'){
+      document.getElementById('startBtn').addEventListener('click', () => go(idx+1));
+    }
+    if(step.kind === 'checklist'){
+      stage.querySelectorAll('.citem').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          checklistState[key] = !checklistState[key];
+          el.classList.toggle('done', !!checklistState[key]);
+          el.querySelector('.box').textContent = checklistState[key] ? '✓' : '';
+        });
+      });
+    }
+    if(step.kind === 'vote'){
+      stage.querySelectorAll('[data-vote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          voteCounts[idx] = parseInt(btn.dataset.vote,10);
+          stage.querySelectorAll('[data-vote]').forEach(b => b.classList.toggle('picked', b===btn));
+        });
+      });
+    }
+    if((step.kind === 'info' && step.timer) || step.kind === 'timer'){
+      wireTimer(step.kind==='timer' ? step.seconds : step.timer);
+    }
+    if(step.kind === 'quiz'){
+      renderQuiz(step);
+    }
+
+    saveStep();
+  }
+
+  function renderQuiz(step){
+    const list = document.getElementById('quizList');
+    function updateScore(){
+      const answered = quizState.filter(v=>v!==null).length;
+      const correct = quizState.filter((v,i)=>v===step.questions[i].correct).length;
+      document.getElementById('scoreTag').textContent = `Score : ${correct} / ${answered || step.questions.length} bonnes réponses`;
+    }
+    list.innerHTML = step.questions.map((q,qi) => `
+      <div class="card">
+        <div class="quizq">${qi+1}. ${escapeHtml(q.q)}</div>
+        <div class="quizopts" data-qi="${qi}">
+          ${q.options.map((o,oi)=>`<button type="button" class="qopt" data-oi="${oi}">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div class="qexplain" id="explain-${qi}">${escapeHtml(q.explain)}</div>
+      </div>
+    `).join('');
+    step.questions.forEach((q, qi) => {
+      const group = list.querySelector(`.quizopts[data-qi="${qi}"]`);
+      const already = quizState[qi];
+      if(already !== null){
+        group.querySelectorAll('.qopt').forEach((b,oi) => {
+          b.disabled = true;
+          if(oi === q.correct) b.classList.add('correct');
+          if(oi === already && already !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById(`explain-${qi}`).classList.add('show');
+      }
+      group.querySelectorAll('.qopt').forEach((btn, oi) => {
+        btn.addEventListener('click', () => {
+          if(quizState[qi] !== null) return;
+          quizState[qi] = oi;
+          group.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+          btn.classList.add(oi === q.correct ? 'correct' : 'wrong');
+          if(oi !== q.correct) group.children[q.correct].classList.add('correct');
+          document.getElementById(`explain-${qi}`).classList.add('show');
+          if(oi === q.correct) beep();
+          updateScore();
+        });
+      });
+    });
+    updateScore();
+  }
+
+  function go(n){
+    stopTimer();
+    idx = Math.max(0, Math.min(STEPS.length-1, n));
+    render();
+    document.getElementById('stage').scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
+  document.getElementById('nextBtn').addEventListener('click', () => go(idx+1));
+
+  render();
+})();
+</script>
+</body>
+</html>

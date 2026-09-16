@@ -1,0 +1,413 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Animateur — Papier Recyclé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --paper:#FFF9F7; --paper-alt:#FBE9EE; --ink:#2B1017; --ink-soft:#6E4552; --ink-faint:#A98995;
+  --brand:#A30E44; --brand-ink:#FFF3F6; --brand-soft:#F6D3DE;
+  --good:#2F7D52; --good-bg:#E3F1E7; --warn:#A9670A; --warn-bg:#FAEED2; --bad:#B23B3B; --bad-bg:#FAE5E3;
+  --line:#F0D5DD; --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,16,23,.05), 0 10px 24px rgba(43,16,23,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+    --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+    --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+    --line:#3A2429; --card:#221519;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+  --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+  --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+  --line:#3A2429; --card:#221519;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Nunito',Arial,sans-serif;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Baloo 2',Georgia,serif;margin:0;}
+
+header{flex:none;display:flex;flex-direction:column;gap:8px;padding:14px 18px calc(10px + env(safe-area-inset-top,0px)) 18px;background:var(--brand);color:var(--brand-ink);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hbrand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;opacity:.92;}
+.hstep{font-weight:700;font-size:13px;opacity:.92;}
+.progress{height:6px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;}
+.progress > i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .35s ease;}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px 18px 28px;}
+.stage{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.stepicon{font-size:44px;text-align:center;}
+.steptitle{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--brand);text-align:center;text-wrap:balance;}
+.stepsub{font-size:14px;color:var(--ink-soft);text-align:center;font-weight:600;}
+
+.say{background:var(--paper-alt);border-left:5px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15.5px;font-weight:700;line-height:1.45;font-style:italic;color:var(--ink);}
+.say .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:5px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.card h3{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+
+.checklist{display:flex;flex-direction:column;gap:2px;}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 4px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14.5px;}
+.citem:hover{background:var(--paper-alt);}
+.citem .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s,border-color .15s;}
+.citem.done .box{background:var(--good);border-color:var(--good);color:#fff;}
+.citem.done span.txt{color:var(--ink-faint);text-decoration:line-through;}
+
+.timerbox{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.timerbig{font-family:'Baloo 2',serif;font-weight:700;font-size:clamp(44px,12vw,64px);color:var(--brand);font-variant-numeric:tabular-nums;}
+.timerbtns{display:flex;gap:10px;}
+
+.quizq{font-size:16px;font-weight:800;text-align:center;margin-bottom:4px;}
+.quizopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{font-family:inherit;font-weight:700;font-size:14.5px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .08s, border-color .15s, background .15s;}
+.qopt:hover{transform:translateY(-1px);}
+.qopt.correct{background:var(--good-bg);border-color:var(--good);}
+.qopt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+.qopt:disabled{cursor:default;}
+.qexplain{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper-alt);border-radius:10px;padding:11px 14px;display:none;}
+.qexplain.show{display:block;}
+
+.vote{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.vote button{font-family:inherit;font-weight:800;font-size:14px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:11px 20px;cursor:pointer;}
+.vote button.picked{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);}
+
+.scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
+
+.vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);}
+
+.bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
+.bigbtn:active{transform:translateY(1px);}
+
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);}
+.navbtn{font-family:'Baloo 2',serif;font-weight:700;font-size:14.5px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 18px;cursor:pointer;}
+.navbtn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent;}
+.navbtn:disabled{opacity:.4;cursor:not-allowed;}
+.dots{display:flex;gap:5px;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.dots i.on{background:var(--brand);}
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="hbrand">🧪 Les P'tits Chimistes</div>
+    <div class="hstep" id="hStep"></div>
+  </div>
+  <div class="progress"><i id="progFill"></i></div>
+</header>
+<main><div class="stage" id="stage"></div></main>
+<footer>
+  <button class="navbtn" id="prevBtn" type="button">◀ Précédent</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="nextBtn" type="button">Suivant ▶</button>
+</footer>
+
+<script>
+(function(){
+  const STEPS = [
+    { kind:'title' },
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"On ne porte jamais la pâte à papier à la bouche. Le mixeur est utilisé uniquement par moi, jamais par les enfants. L'eau qui coule par terre, on l'essuie tout de suite.",
+      list:["On ne touche pas le mixeur : c'est l'intervenant qui prépare la pâte","On garde les manches relevées et on protège la table","On essuie l'eau renversée tout de suite pour ne pas glisser"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"À préparer avant l'arrivée des enfants (pâte à faire la veille)",
+      items:["Pâte à papier prête (vieux papiers trempés puis mixés la veille)","Grandes bassines pour la pâte","Moules et tamis (cadre + grillage), un pour 3 enfants","Colorants alimentaires ou feutres solubles","Éponges et torchons","Éléments à presser : pétales séchés, fils colorés, paillettes bio","Nappe plastique ou journaux pour protéger la table","Étiquettes prénom pour identifier chaque feuille"] },
+    { kind:'info', icon:'🧭', title:'Rappel de la méthode', sub:"Avant de commencer · ~2 min",
+      say:"On se souvient : on observe, on manipule doucement, on presse, on décore, et on laisse sécher patiemment — la patience fait partie de la magie du papier !",
+      list:["Rappeler la démarche du chimiste : observer, essayer, conclure","Aujourd'hui, on ajoute une nouvelle étape : la patience du séchage !"] },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–10 min",
+      say:"Avant de commencer : d'après vous, avec quoi peut-on fabriquer une toute nouvelle feuille de papier ?",
+      options:["Du bois tout neuf","De vieux papiers recyclés","Du plastique"],
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes — on découvrira la vraie réponse ensemble." },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"10–18 min",
+      say:"Regardez : je trempe le moule dans la pâte, je le secoue doucement à plat, je le sors… et les fibres restent sur le tamis !",
+      items:["Montrer la pâte à papier dans la bassine","Tremper le moule et le tamis bien à plat","Secouer doucement pour répartir les fibres","Sortir lentement et laisser égoutter","Montrer comment presser une éponge dessus pour retirer l'eau"] },
+    { kind:'timer', icon:'🌀', title:'Fabrication en cercle', sub:"18–33 min", seconds:900,
+      say:"Chacun votre tour, vous allez venir tremper le moule dans la pâte et fabriquer le début de votre feuille !",
+      list:["Chaque enfant trempe le moule et égoutte, à tour de rôle","On nomme l'action à voix haute : « je trempe, je secoue, j'égoutte »","On pose délicatement la feuille sur son tamis, de côté, avec l'étiquette prénom"] },
+    { kind:'timer', icon:'🎨', title:'Décoration créative', sub:"33–45 min", seconds:720,
+      say:"Maintenant, décorez votre feuille pendant qu'elle est encore humide : pétales, fils, paillettes — tout se fixe dans les fibres !",
+      list:["Distribuer les éléments décoratifs","Presser délicatement chaque élément dans la pâte humide","On peut ajouter un peu de colorant sur les bords pour varier"] },
+    { kind:'info', icon:'⏳', title:'Pressage et séchage', sub:"45–50 min",
+      say:"On presse une dernière fois avec une éponge propre, puis on met la feuille de côté : elle va sécher tranquillement pendant plusieurs jours.",
+      list:["Presser chaque feuille avec une éponge propre","Ranger les feuilles côte à côte, à plat, loin des courants d'air","On récupérera les feuilles sèches à la prochaine séance !"] },
+    { kind:'quiz', icon:'🎓', title:'Quiz des papetiers', sub:"50–56 min · si le temps manque, on le fera la semaine prochaine",
+      questions:[
+        { q:"Le papier recyclé, on le fabrique surtout à partir de…", options:["Bois tout neuf","Vieux papiers","Métal"], correct:1, explain:"On recycle les vieux papiers : pas besoin de couper de nouveaux arbres !" },
+        { q:"Comment s'appelle la pâte humide de fibres de papier ?", options:["Pâte à modeler","Pâte à papier","Pâte à tarte"], correct:1, explain:"C'est la pâte à papier : un mélange de fibres de papier et d'eau." },
+        { q:"Pourquoi c'est important de recycler le papier ?", options:["Pour économiser des arbres et de l'eau","Pour que ce soit plus cher","Ça ne sert à rien"], correct:0, explain:"Recycler le papier permet d'économiser des arbres, de l'eau et de l'énergie." }
+      ] },
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
+      say:"D'où vient notre nouvelle feuille de papier ? … De vieux papiers recyclés, transformés en pâte, puis égouttés et pressés !",
+      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer la fabrication avec leurs mots","Ranger et essuyer le matériel tous ensemble"],
+      timer:240 },
+    { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
+    { kind:'end', icon:'🔍', title:'La semaine prochaine', teaser:"Encre invisible — on découvre une réaction chimique et la chaleur qui révèle des messages secrets !" }
+  ];
+
+  const STORAGE_KEY = 'papierGuideStep';
+  let idx = 0;
+  try{ const s = parseInt(localStorage.getItem(STORAGE_KEY)||'',10); if(!isNaN(s) && s>=0 && s<STEPS.length) idx = s; }catch(e){}
+
+  let voteCounts = {};
+  let quizState = STEPS.find(s=>s.kind==='quiz') ? STEPS.find(s=>s.kind==='quiz').questions.map(()=>null) : [];
+  const checklistState = {};
+  let AC = null;
+  function beep(){
+    try{
+      AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.18].forEach((d,i)=>{
+        const o=AC.createOscillator(), g=AC.createGain();
+        o.type='triangle'; o.frequency.value = i===0?880:1180;
+        const t=AC.currentTime+d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.18,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.32);
+      });
+    }catch(e){}
+  }
+
+  function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  function renderSayAndList(step){
+    let html = '';
+    if(step.say) html += `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>`;
+    if(step.list) html += `<div class="card"><h3>Consignes</h3><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;font-weight:600;">${step.list.map(l=>`<li>${escapeHtml(l)}</li>`).join('')}</ul></div>`;
+    return html;
+  }
+
+  let timerHandle = null, timerLeft = 0, timerRunning = false;
+  function stopTimer(){ if(timerHandle){ clearInterval(timerHandle); timerHandle=null; } timerRunning=false; }
+  function formatT(s){ const m=Math.floor(s/60), r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
+
+  function renderTimerBlock(seconds){
+    timerLeft = seconds;
+    return `<div class="card timerbox">
+      <h3>Minuteur</h3>
+      <div class="timerbig" id="timerDisp">${formatT(timerLeft)}</div>
+      <div class="timerbtns">
+        <button class="navbtn primary" id="timerStart" type="button">▶ Démarrer</button>
+        <button class="navbtn" id="timerReset" type="button">↺ Réinitialiser</button>
+      </div>
+    </div>`;
+  }
+  function wireTimer(seconds){
+    const disp = document.getElementById('timerDisp');
+    const startBtn = document.getElementById('timerStart');
+    const resetBtn = document.getElementById('timerReset');
+    if(!disp) return;
+    stopTimer();
+    timerLeft = seconds;
+    disp.textContent = formatT(timerLeft);
+    startBtn.addEventListener('click', () => {
+      if(timerRunning){ stopTimer(); startBtn.textContent = '▶ Démarrer'; return; }
+      timerRunning = true; startBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        timerLeft--;
+        if(timerLeft <= 0){ timerLeft = 0; disp.textContent = formatT(0); stopTimer(); startBtn.textContent = '▶ Démarrer'; beep(); return; }
+        disp.textContent = formatT(timerLeft);
+      }, 1000);
+    });
+    resetBtn.addEventListener('click', () => {
+      stopTimer(); timerLeft = seconds; disp.textContent = formatT(timerLeft); startBtn.textContent = '▶ Démarrer';
+    });
+  }
+
+  function render(){
+    const step = STEPS[idx];
+    document.getElementById('hStep').textContent = `Étape ${idx+1} / ${STEPS.length}`;
+    document.getElementById('progFill').style.width = Math.round((idx)/(STEPS.length-1)*100) + '%';
+    const dots = document.getElementById('dots');
+    dots.innerHTML = STEPS.map((_,i)=>`<i class="${i===idx?'on':''}"></i>`).join('');
+    document.getElementById('prevBtn').disabled = idx === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.textContent = idx === STEPS.length-1 ? 'Terminer ✓' : 'Suivant ▶';
+
+    const stage = document.getElementById('stage');
+    let html = '';
+
+    if(step.kind === 'title'){
+      html = `
+        <div class="stepicon">📜</div>
+        <div class="steptitle">Le Papier Recyclé</div>
+        <div class="stepsub">Séance 2 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="card"><h3>Objectif de la séance</h3>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Transformer du vieux papier en une toute nouvelle feuille, colorée et texturée, comme un vrai artisan papetier !</p>
+        </div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Pas de stress sur le temps</span>Chaque étape indique sa durée estimée pour tenir dans l'heure. Si on n'a pas fini, ce n'est pas grave : on reprend le quiz ou le débrief à la séance suivante.</div>
+        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Tamis</span><span>Texture</span></div>
+        <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
+      `;
+    } else if(step.kind === 'info'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${step.timer ? renderTimerBlock(step.timer) : ''}
+      `;
+    } else if(step.kind === 'checklist'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="card"><h3>À cocher au fur et à mesure</h3>
+          <div class="checklist">
+            ${step.items.map((it,i)=>{
+              const key = idx+'-'+i;
+              const done = !!checklistState[key];
+              return `<div class="citem ${done?'done':''}" data-key="${key}"><span class="box">${done?'✓':''}</span><span class="txt">${escapeHtml(it)}</span></div>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    } else if(step.kind === 'vote'){
+      const picked = voteCounts[idx];
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>
+        <div class="card">
+          <h3>Vote à main levée</h3>
+          <div class="vote">
+            ${step.options.map((o,i)=>`<button type="button" data-vote="${i}" class="${picked===i?'picked':''}">${escapeHtml(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+      `;
+    } else if(step.kind === 'timer'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${renderTimerBlock(step.seconds)}
+      `;
+    } else if(step.kind === 'quiz'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="scoretag" id="scoreTag"></div>
+        <div id="quizList" style="display:flex;flex-direction:column;gap:18px;"></div>
+      `;
+    } else if(step.kind === 'vocabend'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="stepsub">Vous êtes maintenant de vrais artisans papetiers !</div>
+        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Tamis</span><span>Texture</span><span>Séchage</span></div>
+      `;
+    } else if(step.kind === 'end'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="card"><p style="margin:0;font-size:15px;font-weight:700;text-align:center;">${escapeHtml(step.teaser)}</p></div>
+      `;
+    }
+
+    stage.innerHTML = html;
+
+    if(step.kind === 'title'){
+      document.getElementById('startBtn').addEventListener('click', () => go(idx+1));
+    }
+    if(step.kind === 'checklist'){
+      stage.querySelectorAll('.citem').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          checklistState[key] = !checklistState[key];
+          el.classList.toggle('done', !!checklistState[key]);
+          el.querySelector('.box').textContent = checklistState[key] ? '✓' : '';
+        });
+      });
+    }
+    if(step.kind === 'vote'){
+      stage.querySelectorAll('[data-vote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          voteCounts[idx] = parseInt(btn.dataset.vote,10);
+          stage.querySelectorAll('[data-vote]').forEach(b => b.classList.toggle('picked', b===btn));
+        });
+      });
+    }
+    if((step.kind === 'info' && step.timer) || step.kind === 'timer'){
+      wireTimer(step.kind==='timer' ? step.seconds : step.timer);
+    }
+    if(step.kind === 'quiz'){
+      renderQuiz(step);
+    }
+
+    saveStep();
+  }
+
+  function renderQuiz(step){
+    const list = document.getElementById('quizList');
+    function updateScore(){
+      const answered = quizState.filter(v=>v!==null).length;
+      const correct = quizState.filter((v,i)=>v===step.questions[i].correct).length;
+      document.getElementById('scoreTag').textContent = `Score : ${correct} / ${answered || step.questions.length} bonnes réponses`;
+    }
+    list.innerHTML = step.questions.map((q,qi) => `
+      <div class="card">
+        <div class="quizq">${qi+1}. ${escapeHtml(q.q)}</div>
+        <div class="quizopts" data-qi="${qi}">
+          ${q.options.map((o,oi)=>`<button type="button" class="qopt" data-oi="${oi}">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div class="qexplain" id="explain-${qi}">${escapeHtml(q.explain)}</div>
+      </div>
+    `).join('');
+    step.questions.forEach((q, qi) => {
+      const group = list.querySelector(`.quizopts[data-qi="${qi}"]`);
+      const already = quizState[qi];
+      if(already !== null){
+        group.querySelectorAll('.qopt').forEach((b,oi) => {
+          b.disabled = true;
+          if(oi === q.correct) b.classList.add('correct');
+          if(oi === already && already !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById(`explain-${qi}`).classList.add('show');
+      }
+      group.querySelectorAll('.qopt').forEach((btn, oi) => {
+        btn.addEventListener('click', () => {
+          if(quizState[qi] !== null) return;
+          quizState[qi] = oi;
+          group.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+          btn.classList.add(oi === q.correct ? 'correct' : 'wrong');
+          if(oi !== q.correct) group.children[q.correct].classList.add('correct');
+          document.getElementById(`explain-${qi}`).classList.add('show');
+          if(oi === q.correct) beep();
+          updateScore();
+        });
+      });
+    });
+    updateScore();
+  }
+
+  function go(n){
+    stopTimer();
+    idx = Math.max(0, Math.min(STEPS.length-1, n));
+    render();
+    document.getElementById('stage').scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
+  document.getElementById('nextBtn').addEventListener('click', () => go(idx+1));
+
+  render();
+})();
+</script>
+</body>
+</html>
