@@ -83,7 +83,19 @@ main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;alig
 .scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
 
 .vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);cursor:pointer;}
+.vocab span:hover{border-color:var(--brand);}
+
+.popover-backdrop{position:fixed;inset:0;z-index:59;}
+.popover{position:fixed;z-index:60;width:260px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;line-height:1.45;color:var(--ink);}
+.popover .term{display:block;font-family:'Baloo 2',serif;font-weight:700;color:var(--brand);font-size:14.5px;margin-bottom:4px;}
+
+.memo{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:var(--paper-alt);}
+.memo summary{cursor:pointer;padding:12px 14px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);list-style:none;display:flex;align-items:center;gap:7px;}
+.memo summary::-webkit-details-marker{display:none;}
+.memo summary::before{content:"▸";font-size:11px;transition:transform .15s;}
+.memo[open] summary::before{transform:rotate(90deg);}
+.memo .memobody{padding:0 14px 14px;font-size:13px;line-height:1.65;font-weight:600;color:var(--ink-soft);white-space:pre-line;}
 
 .bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
 .bigbtn:active{transform:translateY(1px);}
@@ -130,19 +142,24 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–10 min",
       say:"Avant de commencer : d'après vous, avec quoi peut-on fabriquer une toute nouvelle feuille de papier ?",
       options:["Du bois tout neuf","De vieux papiers recyclés","Du plastique"],
-      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes — on découvrira la vraie réponse ensemble." },
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes — on découvrira la vraie réponse ensemble.",
+      memo:"RÉPONSE RÉELLE : de vieux papiers recyclés ! On n'a pas besoin de couper de nouveaux arbres.\n\nSi un enfant demande « pourquoi on ne prend pas du bois neuf ? » : on peut réutiliser les fibres déjà présentes dans du papier usagé, ça évite de gaspiller des arbres et de l'eau." },
     { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"10–18 min",
       say:"Regardez : je trempe le moule dans la pâte, je le secoue doucement à plat, je le sors… et les fibres restent sur le tamis !",
-      items:["Montrer la pâte à papier dans la bassine","Tremper le moule et le tamis bien à plat","Secouer doucement pour répartir les fibres","Sortir lentement et laisser égoutter","Montrer comment presser une éponge dessus pour retirer l'eau"] },
+      items:["Montrer la pâte à papier dans la bassine","Tremper le moule et le tamis bien à plat","Secouer doucement pour répartir les fibres","Sortir lentement et laisser égoutter","Montrer comment presser une éponge dessus pour retirer l'eau"],
+      memo:"FIBRES = les petites fibres végétales qui composent le papier.\nTAMIS = la partie grillagée du moule qui retient les fibres et laisse passer l'eau.\n\nSi un enfant demande « pourquoi on doit égoutter ? » : plus on retire d'eau, plus la feuille sèche vite et devient solide." },
     { kind:'timer', icon:'🌀', title:'Fabrication en cercle', sub:"18–33 min", seconds:900,
       say:"Chacun votre tour, vous allez venir tremper le moule dans la pâte et fabriquer le début de votre feuille !",
-      list:["Chaque enfant trempe le moule et égoutte, à tour de rôle","On nomme l'action à voix haute : « je trempe, je secoue, j'égoutte »","On pose délicatement la feuille sur son tamis, de côté, avec l'étiquette prénom"] },
+      list:["Chaque enfant trempe le moule et égoutte, à tour de rôle","On nomme l'action à voix haute : « je trempe, je secoue, j'égoutte »","On pose délicatement la feuille sur son tamis, de côté, avec l'étiquette prénom"],
+      memo:"Si un enfant demande « pourquoi la pâte est grise/beige ? » : c'est la couleur naturelle des fibres de vieux papier mélangées ; on peut ajouter du colorant pour la changer.\n\nSi un enfant demande « on peut réutiliser cette feuille plusieurs fois ? » : oui ! C'est tout le principe du recyclage : une feuille de papier peut être recyclée plusieurs fois." },
     { kind:'timer', icon:'🎨', title:'Décoration créative', sub:"33–45 min", seconds:720,
       say:"Maintenant, décorez votre feuille pendant qu'elle est encore humide : pétales, fils, paillettes — tout se fixe dans les fibres !",
-      list:["Distribuer les éléments décoratifs","Presser délicatement chaque élément dans la pâte humide","On peut ajouter un peu de colorant sur les bords pour varier"] },
+      list:["Distribuer les éléments décoratifs","Presser délicatement chaque élément dans la pâte humide","On peut ajouter un peu de colorant sur les bords pour varier"],
+      memo:"Si un enfant demande « pourquoi les pétales restent collés ? » : en séchant, les fibres de papier se referment autour des éléments décoratifs et les emprisonnent." },
     { kind:'info', icon:'⏳', title:'Pressage et séchage', sub:"45–50 min",
       say:"On presse une dernière fois avec une éponge propre, puis on met la feuille de côté : elle va sécher tranquillement pendant plusieurs jours.",
-      list:["Presser chaque feuille avec une éponge propre","Ranger les feuilles côte à côte, à plat, loin des courants d'air","On récupérera les feuilles sèches à la prochaine séance !"] },
+      list:["Presser chaque feuille avec une éponge propre","Ranger les feuilles côte à côte, à plat, loin des courants d'air","On récupérera les feuilles sèches à la prochaine séance !"],
+      memo:"Si un enfant demande « pourquoi ça met autant de temps à sécher ? » : il faut que toute l'eau s'évapore des fibres pour que la feuille devienne solide et rigide — ça prend plusieurs jours à l'air libre." },
     { kind:'quiz', icon:'🎓', title:'Quiz des papetiers', sub:"50–56 min · si le temps manque, on le fera la semaine prochaine",
       questions:[
         { q:"Le papier recyclé, on le fabrique surtout à partir de…", options:["Bois tout neuf","Vieux papiers","Métal"], correct:1, explain:"On recycle les vieux papiers : pas besoin de couper de nouveaux arbres !" },
@@ -152,7 +169,8 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
       say:"D'où vient notre nouvelle feuille de papier ? … De vieux papiers recyclés, transformés en pâte, puis égouttés et pressés !",
       list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer la fabrication avec leurs mots","Ranger et essuyer le matériel tous ensemble"],
-      timer:240 },
+      timer:240,
+      memo:"RÉCAP si besoin : on a trempé du vieux papier dans l'eau, on l'a mixé en pâte, puis on a utilisé un tamis pour récupérer les fibres sous forme de nouvelle feuille. C'est ça, le recyclage du papier !" },
     { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
     { kind:'end', icon:'🔍', title:'La semaine prochaine', teaser:"Encre invisible — on découvre une réaction chimique et la chaleur qui révèle des messages secrets !" }
   ];
@@ -181,6 +199,53 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
   function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
 
   function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const DEFINITIONS = {
+    "Fibres":"Les toutes petites fibres qui composent le papier — on les voit quand on déchire une feuille mouillée.",
+    "Pâte à papier":"Le mélange de fibres de papier et d'eau, une fois le vieux papier trempé puis mixé.",
+    "Recyclage":"Transformer un objet usagé en quelque chose de nouveau, au lieu de le jeter.",
+    "Tamis":"La partie grillagée du moule qui retient les fibres et laisse passer l'eau.",
+    "Texture":"Ce qu'on ressent au toucher : lisse, rugueux, épais, fin…",
+    "Séchage":"Le temps que met l'eau à s'évaporer des fibres pour que la feuille devienne solide."
+
+  };
+  function closePopover(){
+    if(window._pop){ window._pop.backdrop.remove(); window._pop.pop.remove(); window._pop=null; }
+  }
+  function showPopover(anchor, term, def){
+    closePopover();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'popover-backdrop';
+    backdrop.addEventListener('click', closePopover);
+    const pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = `<span class="term">${escapeHtml(term)}</span>${escapeHtml(def)}`;
+    document.body.appendChild(backdrop);
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const pw = 260;
+    let left = Math.min(Math.max(16, r.left), window.innerWidth - pw - 16);
+    let top = r.bottom + 8;
+    if(top + 90 > window.innerHeight) top = Math.max(16, r.top - 90);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    window._pop = {backdrop, pop};
+  }
+  function wireVocab(container){
+    container.querySelectorAll('.vocab span').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const term = el.textContent;
+        const def = DEFINITIONS[term];
+        if(def) showPopover(el, term, def);
+      });
+    });
+  }
+
+  function renderMemo(step){
+    if(!step.memo) return '';
+    return `<details class="memo"><summary>🧠 Mémo tuteur — pour répondre aux questions</summary><div class="memobody">${escapeHtml(step.memo)}</div></details>`;
+  }
 
   function renderSayAndList(step){
     let html = '';
@@ -260,6 +325,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
         ${renderSayAndList(step)}
         ${step.timer ? renderTimerBlock(step.timer) : ''}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'checklist'){
       html = `
@@ -276,6 +342,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
             }).join('')}
           </div>
         </div>
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'vote'){
       const picked = voteCounts[idx];
@@ -291,6 +358,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
           </div>
         </div>
         ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'timer'){
       html = `
@@ -299,6 +367,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
         ${renderSayAndList(step)}
         ${renderTimerBlock(step.seconds)}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'quiz'){
       html = `
@@ -352,6 +421,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     if(step.kind === 'quiz'){
       renderQuiz(step);
     }
+    wireVocab(stage);
 
     saveStep();
   }
@@ -401,6 +471,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 
   function go(n){
     stopTimer();
+    closePopover();
     idx = Math.max(0, Math.min(STEPS.length-1, n));
     render();
     document.getElementById('stage').scrollIntoView({block:'start'});
@@ -408,7 +479,10 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
   }
 
   document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
-  document.getElementById('nextBtn').addEventListener('click', () => go(idx+1));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(idx === STEPS.length-1){ window.location.href = 'index.html'; return; }
+    go(idx+1);
+  });
 
   render();
 })();

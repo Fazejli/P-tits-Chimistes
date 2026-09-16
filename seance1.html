@@ -83,7 +83,19 @@ main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;alig
 .scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
 
 .vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);cursor:pointer;}
+.vocab span:hover{border-color:var(--brand);}
+
+.popover-backdrop{position:fixed;inset:0;z-index:59;}
+.popover{position:fixed;z-index:60;width:260px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;line-height:1.45;color:var(--ink);}
+.popover .term{display:block;font-family:'Baloo 2',serif;font-weight:700;color:var(--brand);font-size:14.5px;margin-bottom:4px;}
+
+.memo{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:var(--paper-alt);}
+.memo summary{cursor:pointer;padding:12px 14px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);list-style:none;display:flex;align-items:center;gap:7px;}
+.memo summary::-webkit-details-marker{display:none;}
+.memo summary::before{content:"▸";font-size:11px;transition:transform .15s;}
+.memo[open] summary::before{transform:rotate(90deg);}
+.memo .memobody{padding:0 14px 14px;font-size:13px;line-height:1.65;font-weight:600;color:var(--ink-soft);white-space:pre-line;}
 
 .bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
 .bigbtn:active{transform:translateY(1px);}
@@ -131,17 +143,21 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
       say:"Je vous montre du bicarbonate, et là, du vinaigre. À votre avis, si je les mélange, qu'est-ce qu'il va se passer ?",
       options:["Rien du tout","Ça va mousser","Je ne sais pas"],
-      note:"Il n'y a pas de mauvaise réponse ici : c'est une hypothèse ! Compte les mains levées pour chaque option et clique sur celle qui a le plus de votes." },
+      note:"Il n'y a pas de mauvaise réponse ici : c'est une hypothèse ! Compte les mains levées pour chaque option et clique sur celle qui a le plus de votes.",
+      memo:"RÉPONSE RÉELLE : ça va beaucoup mousser ! Le bicarbonate (une base) et le vinaigre (un acide) réagissent ensemble et libèrent du gaz carbonique — c'est ce gaz qui forme toute la mousse.\n\nSi un enfant demande « pourquoi ça mousse ? » : les deux produits se transforment en quelque chose de nouveau (du gaz) — c'est ce qu'on appelle une réaction chimique.\n\nSi un enfant demande « c'est dangereux ? » : non, c'est sans danger, on peut même refaire cette expérience à la maison dans la cuisine." },
     { kind:'checklist', icon:'🌋', title:'Démonstration guidée', sub:"9–16 min",
       say:"Je verse le bicarbonate… j'ajoute le vinaigre… regardez l'effervescence !",
-      items:["Verser le bicarbonate dans le volcan","Ajouter le colorant et un peu de liquide vaisselle","Verser le vinaigre lentement","Nommer ce qu'on voit : « ça mousse, ça déborde ! »","Introduire les mots acide et base"] },
+      items:["Verser le bicarbonate dans le volcan","Ajouter le colorant et un peu de liquide vaisselle","Verser le vinaigre lentement","Nommer ce qu'on voit : « ça mousse, ça déborde ! »","Introduire les mots acide et base"],
+      memo:"ACIDE = un produit au goût piquant, comme le vinaigre ou le citron.\nBASE = un produit qui réagit avec les acides, comme le bicarbonate de soude.\n\nSi un enfant demande « pourquoi ça déborde ? » : le gaz se forme plus vite qu'il ne peut s'échapper, donc il pousse le liquide hors du volcan.\n\nSi un enfant demande « la couleur, c'est la réaction ? » : non, la couleur vient juste du colorant alimentaire ajouté — ça n'a rien à voir avec la réaction chimique elle-même." },
     { kind:'timer', icon:'🔁', title:'L’éruption, ensemble', sub:"16–30 min", seconds:840,
       say:"Chacun votre tour, vous allez venir verser un ingrédient. On forme un cercle autour du volcan !",
-      list:["Chaque enfant verse un peu de bicarbonate ou de vinaigre à tour de rôle","On nomme l'action à voix haute à chaque fois","On laisse le temps à la mousse de déborder avant de recommencer"] },
+      list:["Chaque enfant verse un peu de bicarbonate ou de vinaigre à tour de rôle","On nomme l'action à voix haute à chaque fois","On laisse le temps à la mousse de déborder avant de recommencer"],
+      memo:"Si un enfant demande « pourquoi ça mousse plus si on met plus de vinaigre ? » : plus il y a d'acide disponible, plus il peut réagir avec le bicarbonate, donc plus de gaz est produit.\n\nSi un enfant demande « on peut le boire ? » : non, même si ce n'est pas dangereux, on ne boit jamais une expérience." },
     { kind:'info', icon:'🧪', title:'Deuxième éruption : on ajuste', sub:"30–37 min",
       say:"Cette fois, c'est vous qui décidez ! Plus de vinaigre ? Plus de colorant ? Qu'est-ce qui va changer ?",
       list:["Demander 2-3 propositions d'enfants","Réaliser l'éruption modifiée","Comparer à voix haute avec la première : plus forte ? plus longue ?"],
-      timer:420 },
+      timer:420,
+      memo:"RÉPONSE ATTENDUE : plus de vinaigre = plus de gaz produit = éruption plus forte et plus longue (jusqu'à un certain point, limité par la quantité de bicarbonate disponible). Plus de colorant ne change que la couleur, pas la force de la réaction." },
     { kind:'timer', icon:'📓', title:'Fiche d’observation', sub:"37–49 min", seconds:720,
       say:"Sur votre fiche : ce que vous aviez prédit, ce que vous avez vu, et un dessin de votre volcan.",
       list:["Distribuer une fiche et un crayon par enfant","Les plus jeunes : dessin libre","Les plus grands : ajouter une phrase avec les mots acide / base","Si le temps manque, pas de souci : on peut finir les fiches la semaine prochaine"] },
@@ -154,7 +170,8 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"55–60 min",
       say:"Pourquoi est-ce que ça mousse ? … Le bicarbonate, une base, réagit avec le vinaigre, un acide, et ça libère du gaz : c'est la mousse !",
       list:["Reprendre les mots du vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer avec leurs mots","Ranger le matériel tous ensemble"],
-      timer:300 },
+      timer:300,
+      memo:"RÉCAP si besoin : le bicarbonate (une base) + le vinaigre (un acide) = une réaction chimique qui libère du gaz carbonique = la mousse. C'est une transformation qu'on ne peut pas annuler, contrairement à un simple mélange (comme de l'eau et du sable, qu'on peut reséparer)." },
     { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !', },
     { kind:'end', icon:'♻️', title:'La semaine prochaine', teaser:"Papier recyclé — on transforme du vieux papier en nouvelles feuilles colorées et texturées !" }
   ];
@@ -183,6 +200,52 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
   function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
 
   function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const DEFINITIONS = {
+    "Réaction chimique":"Quand deux produits se mélangent et se transforment en quelque chose de nouveau, sans retour en arrière possible.",
+    "Acide":"Un produit au goût piquant, comme le vinaigre ou le citron.",
+    "Base":"Un produit qui réagit avec les acides, comme le bicarbonate de soude.",
+    "Effervescence":"Les bulles et la mousse qui apparaissent pendant une réaction chimique.",
+    "Hypothèse":"Une idée qu'on propose avant de vérifier par l'expérience.",
+    "Éruption":"Le moment où le gaz produit par la réaction pousse le liquide hors du volcan, en moussant."
+  };
+  function closePopover(){
+    if(window._pop){ window._pop.backdrop.remove(); window._pop.pop.remove(); window._pop=null; }
+  }
+  function showPopover(anchor, term, def){
+    closePopover();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'popover-backdrop';
+    backdrop.addEventListener('click', closePopover);
+    const pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = `<span class="term">${escapeHtml(term)}</span>${escapeHtml(def)}`;
+    document.body.appendChild(backdrop);
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const pw = 260;
+    let left = Math.min(Math.max(16, r.left), window.innerWidth - pw - 16);
+    let top = r.bottom + 8;
+    if(top + 90 > window.innerHeight) top = Math.max(16, r.top - 90);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    window._pop = {backdrop, pop};
+  }
+  function wireVocab(container){
+    container.querySelectorAll('.vocab span').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const term = el.textContent;
+        const def = DEFINITIONS[term];
+        if(def) showPopover(el, term, def);
+      });
+    });
+  }
+
+  function renderMemo(step){
+    if(!step.memo) return '';
+    return `<details class="memo"><summary>🧠 Mémo tuteur — pour répondre aux questions</summary><div class="memobody">${escapeHtml(step.memo)}</div></details>`;
+  }
 
   function renderSayAndList(step){
     let html = '';
@@ -262,6 +325,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
         ${renderSayAndList(step)}
         ${step.timer ? renderTimerBlock(step.timer) : ''}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'checklist'){
       html = `
@@ -278,6 +342,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
             }).join('')}
           </div>
         </div>
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'vote'){
       const picked = voteCounts[idx];
@@ -293,6 +358,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
           </div>
         </div>
         ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'timer'){
       html = `
@@ -301,6 +367,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
         ${renderSayAndList(step)}
         ${renderTimerBlock(step.seconds)}
+        ${renderMemo(step)}
       `;
     } else if(step.kind === 'quiz'){
       html = `
@@ -354,6 +421,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     if(step.kind === 'quiz'){
       renderQuiz(step);
     }
+    wireVocab(stage);
 
     saveStep();
   }
@@ -403,6 +471,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 
   function go(n){
     stopTimer();
+    closePopover();
     idx = Math.max(0, Math.min(STEPS.length-1, n));
     render();
     document.getElementById('stage').scrollIntoView({block:'start'});
@@ -410,7 +479,10 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
   }
 
   document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
-  document.getElementById('nextBtn').addEventListener('click', () => go(idx+1));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(idx === STEPS.length-1){ window.location.href = 'index.html'; return; }
+    go(idx+1);
+  });
 
   render();
 })();
