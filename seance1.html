@@ -134,40 +134,44 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
     { kind:'title' },
     { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"On ne porte jamais les produits à la bouche ni au visage. On verse lentement, un enfant à la fois. On attend que je donne l'ingrédient avant de verser.",
       list:["On respecte la règle : un enfant qui verse à la fois","On lève la main pour recevoir l'ingrédient suivant","On ne goûte et on ne renifle jamais un produit"] },
-    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"À vérifier avant l'arrivée des enfants",
-      items:["Volcan (bouteille + pâte à modeler)","Bicarbonate de soude","Vinaigre blanc","Colorant alimentaire rouge/orange","Liquide vaisselle","Plateau / bac","Gobelets doseurs et cuillères","Entonnoir","Serviettes / essuie-tout","15 fiches d'observation + crayons"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"À vérifier avant l'arrivée des enfants — on construit le volcan sur place, avec les enfants !",
+      items:["1 bouteille plastique vide par enfant (ou par binôme, ex. petite bouteille 33 cl)","Pâte à modeler (plusieurs couleurs si possible)","Bicarbonate de soude","Vinaigre blanc","Colorant alimentaire rouge/orange","Liquide vaisselle","Plateau / bac par volcan","Gobelets doseurs et cuillères","Entonnoir","Serviettes / essuie-tout","15 fiches d'observation + crayons"] },
     { kind:'info', icon:'👋', title:'Accueil et rituel du labo', sub:"0–5 min",
       say:"Bienvenue chimistes ! Aujourd'hui, on enfile sa tenue de chimiste. Notre règle d'or : je regarde, j'écoute, puis j'expérimente.",
       list:["Tenue de chimiste (tablier ou imaginaire)","Rappeler la règle d'or à voix haute, tous ensemble","Tour de table : « Un volcan, c'est quoi ? »"],
       timer:300 },
-    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
+    { kind:'timer', icon:'🏗️', title:'Construction du volcan', sub:"5–15 min", seconds:600,
+      say:"Avant de le faire entrer en éruption, il faut construire notre volcan ! Prenez votre bouteille et recouvrez-la de pâte à modeler pour lui donner une forme de montagne — avec le goulot bien dégagé en haut, ça sera le cratère.",
+      list:["Distribuer une bouteille vide et de la pâte à modeler à chaque enfant (ou par binôme)","Modeler la pâte autour de la bouteille pour former la montagne","Laisser le goulot bien dégagé en haut : c'est le cratère !","Les plus grands peuvent ajouter du relief ; les plus petits peuvent juste recouvrir la bouteille"],
+      memo:"Si un enfant demande « pourquoi on met de la pâte à modeler ? » : ça donne juste la forme d'une montagne autour de la bouteille — la réaction se passe entièrement à l'intérieur, la pâte à modeler n'y participe pas.\n\nSi la pâte est trop dure : la ramollir un peu entre les mains avant de la donner aux enfants.\n\nAstuce : garder au moins 2 cm de goulot bien dégagé en haut, sinon le mélange débordera moins bien tout à l'heure." },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"15–19 min",
       say:"Je vous montre du bicarbonate, et là, du vinaigre. À votre avis, si je les mélange, qu'est-ce qu'il va se passer ?",
       options:["Rien du tout","Ça va mousser","Je ne sais pas"],
       note:"Il n'y a pas de mauvaise réponse ici : c'est une hypothèse ! Compte les mains levées pour chaque option et clique sur celle qui a le plus de votes.",
       memo:"RÉPONSE RÉELLE : ça va beaucoup mousser ! Le bicarbonate (une base) et le vinaigre (un acide) réagissent ensemble et libèrent du gaz carbonique — c'est ce gaz qui forme toute la mousse.\n\nSi un enfant demande « pourquoi ça mousse ? » : les deux produits se transforment en quelque chose de nouveau (du gaz) — c'est ce qu'on appelle une réaction chimique.\n\nSi un enfant demande « c'est dangereux ? » : non, c'est sans danger, on peut même refaire cette expérience à la maison dans la cuisine." },
-    { kind:'checklist', icon:'🌋', title:'Démonstration guidée', sub:"9–16 min",
+    { kind:'checklist', icon:'🌋', title:'Démonstration guidée', sub:"19–26 min",
       say:"Je verse le bicarbonate… j'ajoute le vinaigre… regardez l'effervescence !",
       items:["Verser le bicarbonate dans le volcan","Ajouter le colorant et un peu de liquide vaisselle","Verser le vinaigre lentement","Nommer ce qu'on voit : « ça mousse, ça déborde ! »","Introduire les mots acide et base"],
       memo:"ACIDE = un produit au goût piquant, comme le vinaigre ou le citron.\nBASE = un produit qui réagit avec les acides, comme le bicarbonate de soude.\n\nSi un enfant demande « pourquoi ça déborde ? » : le gaz se forme plus vite qu'il ne peut s'échapper, donc il pousse le liquide hors du volcan.\n\nSi un enfant demande « la couleur, c'est la réaction ? » : non, la couleur vient juste du colorant alimentaire ajouté — ça n'a rien à voir avec la réaction chimique elle-même." },
-    { kind:'timer', icon:'🔁', title:'L’éruption, ensemble', sub:"16–30 min", seconds:840,
+    { kind:'timer', icon:'🔁', title:'L’éruption, ensemble', sub:"26–40 min", seconds:840,
       say:"Chacun votre tour, vous allez venir verser un ingrédient. On forme un cercle autour du volcan !",
       list:["Chaque enfant verse un peu de bicarbonate ou de vinaigre à tour de rôle","On nomme l'action à voix haute à chaque fois","On laisse le temps à la mousse de déborder avant de recommencer"],
       memo:"Si un enfant demande « pourquoi ça mousse plus si on met plus de vinaigre ? » : plus il y a de vinaigre, plus il peut réagir avec le bicarbonate, donc plus de gaz est produit.\n\nSi un enfant demande « on peut le boire ? » : non, même si ce n'est pas dangereux, on ne boit jamais une expérience." },
-    { kind:'info', icon:'🧪', title:'Deuxième éruption : on ajuste', sub:"30–37 min",
+    { kind:'info', icon:'🧪', title:'Deuxième éruption : on ajuste', sub:"40–47 min",
       say:"Cette fois, c'est vous qui décidez ! Plus de vinaigre ? Plus de colorant ? Qu'est-ce qui va changer ?",
       list:["Demander 2-3 propositions d'enfants","Réaliser l'éruption modifiée","Comparer à voix haute avec la première : plus forte ? plus longue ?"],
       timer:420,
       memo:"RÉPONSE ATTENDUE : plus de vinaigre = plus de gaz produit = éruption plus forte et plus longue (jusqu'à un certain point, limité par la quantité de bicarbonate disponible). Plus de colorant ne change que la couleur, pas la force de la réaction." },
-    { kind:'timer', icon:'📓', title:'Fiche d’observation', sub:"37–49 min", seconds:720,
+    { kind:'timer', icon:'📓', title:'Fiche d’observation', sub:"47–59 min", seconds:720,
       say:"Sur votre fiche : ce que vous aviez prédit, ce que vous avez vu, et un dessin de votre volcan.",
       list:["Distribuer une fiche et un crayon par enfant","Les plus jeunes : dessin libre","Les plus grands : ajouter une phrase avec les mots acide / base","Si le temps manque, pas de souci : on peut finir les fiches la semaine prochaine"] },
-    { kind:'quiz', icon:'🎓', title:'Quiz des chimistes', sub:"49–55 min · si le temps manque, on le fera la semaine prochaine",
+    { kind:'quiz', icon:'🎓', title:'Quiz des chimistes', sub:"59–65 min · si le temps manque, on le fera la semaine prochaine",
       questions:[
         { q:"Le bicarbonate de soude, c'est…", options:["Un acide","Une base","Du sucre"], correct:1, explain:"Le bicarbonate est une base : c'est pour ça qu'il réagit avec le vinaigre, qui est un acide." },
         { q:"Qu'est-ce qui fait mousser le volcan ?", options:["La couleur du colorant","Le gaz carbonique libéré","Un tour de magie"], correct:1, explain:"La réaction entre l'acide et la base libère du gaz carbonique : c'est lui qui forme toute la mousse." },
         { q:"Comment appelle-t-on cette transformation ?", options:["Une réaction chimique","Une réaction électrique","Une réaction magique"], correct:0, explain:"C'est une réaction chimique : deux produits se transforment en autre chose (ici, du gaz) et on ne peut pas revenir en arrière." }
       ] },
-    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"55–60 min",
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"65–70 min",
       say:"Pourquoi est-ce que ça mousse ? … Le bicarbonate, une base, réagit avec le vinaigre, un acide, et ça libère du gaz : c'est la mousse !",
       list:["Reprendre les mots du vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer avec leurs mots","Ranger le matériel tous ensemble"],
       timer:300,
@@ -309,11 +313,11 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
       html = `
         <div class="stepicon">🌋</div>
         <div class="steptitle">Le Volcan en Éruption</div>
-        <div class="stepsub">Séance 1 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="stepsub">Séance 1 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · ~70 minutes</div>
         <div class="card"><h3>Objectif de la séance</h3>
-          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Observer une réaction acide-base spectaculaire, formuler des hypothèses, et comprendre ensemble pourquoi ça mousse — en s'amusant !</p>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Construire son propre volcan, observer une réaction acide-base spectaculaire, et comprendre ensemble pourquoi ça mousse — en s'amusant !</p>
         </div>
-        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Pas de stress sur le temps</span>Chaque étape indique sa durée estimée pour tenir dans l'heure. Si on n'a pas fini, ce n'est pas grave : on reprend la fiche d'observation ou le quiz à la séance suivante.</div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Pas de stress sur le temps</span>Chaque étape indique sa durée estimée. Comme on ajoute la construction du volcan, ça déborde un peu de l'heure — c'est prévu ! Si on n'a pas fini, ce n'est pas grave : on reprend la fiche d'observation ou le quiz à la séance suivante.</div>
         <div class="vocab"><span>Réaction chimique</span><span>Acide</span><span>Base</span><span>Effervescence</span><span>Hypothèse</span></div>
         <a class="filelink" href="fiches/Fiche-observation-Seance-1-Volcan.pdf" download>📄 Télécharger la fiche d'observation (PDF)</a>
         <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
