@@ -132,45 +132,57 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 (function(){
   const STEPS = [
     { kind:'title' },
-    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"On ne porte jamais la pâte à papier à la bouche. Le mixeur est utilisé uniquement par moi, jamais par les enfants. L'eau qui coule par terre, on l'essuie tout de suite.",
-      list:["On ne touche pas le mixeur : c'est l'intervenant qui prépare la pâte","On garde les manches relevées et on protège la table","On essuie l'eau renversée tout de suite pour ne pas glisser"] },
-    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"À préparer avant l'arrivée des enfants (pâte à faire la veille)",
-      items:["Pâte à papier prête (vieux papiers trempés puis mixés la veille)","Grandes bassines pour la pâte","Moules et tamis (cadre + grillage), un pour 3 enfants","Colorants alimentaires ou feutres solubles","Éponges et torchons","Éléments à presser : pétales séchés, fils colorés, paillettes bio","Nappe plastique ou journaux pour protéger la table","Étiquettes prénom pour identifier chaque feuille"] },
-    { kind:'info', icon:'🧭', title:'Rappel de la méthode', sub:"Avant de commencer · ~2 min",
-      say:"On se souvient : on observe, on manipule doucement, on presse, on décore, et on laisse sécher patiemment — la patience fait partie de la magie du papier !",
-      list:["Rappeler la démarche du chimiste : observer, essayer, conclure","Aujourd'hui, on ajoute une nouvelle étape : la patience du séchage !"] },
-    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–10 min",
-      say:"Avant de commencer : d'après vous, avec quoi peut-on fabriquer une toute nouvelle feuille de papier ?",
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"On ne porte jamais la pâte à papier à la bouche. On garde la pâte dans le bac, et si de l'eau coule par terre, on l'essuie tout de suite.",
+      list:["On garde les manches relevées","La pâte reste dans le bac : on ne la lance pas","On essuie l'eau renversée tout de suite pour ne pas glisser"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"Préparation : 15 minutes sur place, rien à faire la veille",
+      items:[
+        "📦 Tout le matériel est déposé sur place, prêt à l'emploi : rien à acheter ni à récupérer",
+        "À l'arrivée (15 min avant) : poser le kraft sur la table",
+        "À l'arrivée : remplir le bac d'eau tiède et y verser le sac de papier déjà déchiré + l'essuie-tout émietté",
+        "Vérifier le reste : entonnoir, gobelets et cuillères, 3 bouteilles, colorant, essuie-tout, 2 éponges, torchons, crayons",
+        "Vérifier la déco : confettis de papier coloré (+ feuilles mortes ou petits pétales si tu as pu en ramasser, facultatif)"
+      ],
+      memo:"CE QU'ON NE PREND PLUS (économies) : mixeur, moules et tamis, nappe plastique, paillettes, feutres, étiquettes, journaux.\n\nSANS MIXEUR : le papier est déposé déjà déchiré en petits morceaux. Il trempe dès l'arrivée dans l'eau tiède, soit environ 30 min avant le malaxage. L'essuie-tout ajouté se défait tout de suite et aide la pâte à se lier. La pâte sera un peu plus grumeleuse qu'après une nuit de trempage : c'est normal, et ça donne une jolie texture !\n\nNAPPE EN KRAFT : elle va se mouiller, c'est normal. Garder la pâte au-dessus du bac autant que possible. Après la séance, le kraft abîmé peut être laissé sur place : il servira de papier pour une prochaine pâte, zéro gaspi !\n\nSANS TAMIS : l'entonnoir + une feuille d'essuie-tout font un filtre qui montre exactement la même chose (l'eau passe, les fibres restent). Pour fabriquer les feuilles, on égoutte la pâte en la pressant dans les mains, puis on l'aplatit au rouleau entre deux torchons.\n\nPas de paillettes : ce sont des morceaux de plastique, pas top pour une séance sur le recyclage !" },
+    { kind:'info', icon:'👋', title:'Accueil et rappel de la méthode', sub:"0–5 min",
+      say:"Bienvenue chimistes ! On se souvient de la règle d'or : je regarde, j'écoute, puis j'expérimente. Aujourd'hui, on ajoute une nouvelle étape : la patience !",
+      list:["Rappeler la règle d'or à voix haute, tous ensemble","Se souvenir en 1 phrase du volcan de la semaine dernière","Installer tout le monde en cercle autour du bac"],
+      timer:300 },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
+      say:"D'après vous, avec quoi peut-on fabriquer une toute nouvelle feuille de papier ?",
       options:["Du bois tout neuf","De vieux papiers recyclés","Du plastique"],
       note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes — on découvrira la vraie réponse ensemble.",
       memo:"RÉPONSE RÉELLE : de vieux papiers recyclés ! On n'a pas besoin de couper de nouveaux arbres.\n\nSi un enfant demande « pourquoi on ne prend pas du bois neuf ? » : on peut réutiliser les fibres déjà présentes dans du papier usagé, ça évite de gaspiller des arbres et de l'eau." },
-    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"10–18 min",
-      say:"Regardez : je trempe le moule dans la pâte, je le secoue doucement à plat, je le sors… et les fibres restent sur le tamis !",
-      items:["Montrer la pâte à papier dans la bassine","Tremper le moule et le tamis bien à plat","Secouer doucement pour répartir les fibres","Sortir lentement et laisser égoutter","Montrer comment presser une éponge dessus pour retirer l'eau"],
-      memo:"FIBRES = les petites fibres végétales qui composent le papier.\nTAMIS = la partie grillagée du moule qui retient les fibres et laisse passer l'eau.\n\nSi un enfant demande « pourquoi on doit égoutter ? » : plus on retire d'eau, plus la feuille sèche vite et devient solide." },
-    { kind:'timer', icon:'🌀', title:'Fabrication en cercle', sub:"18–33 min", seconds:900,
-      say:"Chacun votre tour, vous allez venir tremper le moule dans la pâte et fabriquer le début de votre feuille !",
-      list:["Chaque enfant trempe le moule et égoutte, à tour de rôle","On nomme l'action à voix haute : « je trempe, je secoue, j'égoutte »","On pose délicatement la feuille sur son tamis, de côté, avec l'étiquette prénom"],
-      memo:"Si un enfant demande « pourquoi la pâte est grise/beige ? » : c'est la couleur naturelle des fibres de vieux papier mélangées ; on peut ajouter du colorant pour la changer.\n\nSi un enfant demande « on peut réutiliser cette feuille plusieurs fois ? » : oui ! C'est tout le principe du recyclage : une feuille de papier peut être recyclée plusieurs fois." },
-    { kind:'timer', icon:'🎨', title:'Décoration créative', sub:"33–45 min", seconds:720,
-      say:"Maintenant, décorez votre feuille pendant qu'elle est encore humide : pétales, fils, paillettes — tout se fixe dans les fibres !",
-      list:["Distribuer les éléments décoratifs","Presser délicatement chaque élément dans la pâte humide","On peut ajouter un peu de colorant sur les bords pour varier"],
-      memo:"Si un enfant demande « pourquoi les pétales restent collés ? » : en séchant, les fibres de papier se referment autour des éléments décoratifs et les emprisonnent." },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"9–15 min",
+      say:"Regardez : je mets une feuille d'essuie-tout dans l'entonnoir, je verse un peu de pâte avec de l'eau… L'eau passe, mais les fibres restent ! C'est comme ça qu'on récupère les fibres pour faire une feuille.",
+      items:["Montrer les morceaux de papier qui trempent dans le bac depuis le début","Placer une feuille d'essuie-tout dans l'entonnoir, au-dessus d'un gobelet","Verser une cuillère de pâte avec de l'eau : l'eau coule, les fibres restent","Prendre une poignée de pâte et la presser dans les mains pour l'égoutter","La poser sur un torchon, l'aplatir, recouvrir d'un 2e torchon","Rouler dessus avec une bouteille, puis éponger"],
+      memo:"FIBRES = les petites fibres végétales qui composent le papier.\nFILTRE = ce qui retient les fibres et laisse passer l'eau (ici l'essuie-tout dans l'entonnoir).\n\nSi un enfant demande « pourquoi on doit égoutter ? » : plus on retire d'eau, plus la feuille sèche vite et devient solide.\n\nSi un enfant demande « c'est comme le volcan ? » : non ! Ici, il n'y a pas de réaction chimique : le papier ne se transforme pas en autre chose, on sépare et on rassemble ses fibres. C'est une transformation physique." },
+    { kind:'timer', icon:'✋', title:'On malaxe la pâte', sub:"15–22 min", seconds:420,
+      say:"On fait 2 équipes qui vont se relayer : la première équipe plonge les mains dans le bac et écrase les morceaux de papier, puis on change ! On veut une pâte bien lisse, comme de la bouillie : vous êtes le mixeur !",
+      list:["2 équipes de 7-8 enfants se relaient autour du bac, environ 3 min chacune","Pendant ce temps, l'autre équipe écrit son prénom au crayon sur un coin d'essuie-tout","Écraser et frotter les morceaux entre les doigts jusqu'à ne plus voir de gros morceaux","À la fin, ajouter quelques gouttes de colorant et mélanger tous ensemble"],
+      memo:"Si un enfant demande « pourquoi le papier se défait dans l'eau ? » : l'eau s'infiltre entre les fibres et les décolle les unes des autres.\n\nSi un enfant demande « pourquoi la pâte est un peu grise ? » : c'est l'encre des photocopies et des brouillons qui se mélange aux fibres ; le colorant permet de changer la couleur." },
+    { kind:'timer', icon:'🌀', title:'Chacun fabrique sa feuille', sub:"22–37 min", seconds:900,
+      say:"Chacun votre tour : je prends une poignée de pâte, je la presse pour l'égoutter, je l'aplatis sur le torchon, puis je roule dessus avec la bouteille !",
+      list:["Les enfants passent au bac un par un (le prénom est déjà écrit sur leur essuie-tout)","Prendre une poignée de pâte (ou 2 gobelets) et presser au-dessus du bac","Aplatir en une couche fine et régulière sur le torchon","Recouvrir et rouler avec une bouteille, puis poser la feuille sur son essuie-tout prénom","On nomme l'action à voix haute : « je presse, j'aplatis, je roule »"],
+      memo:"Astuce : une feuille trop épaisse mettra très longtemps à sécher. Viser environ l'épaisseur d'un carton de céréales.\n\nSi un enfant demande « on peut réutiliser cette feuille plusieurs fois ? » : oui ! C'est tout le principe du recyclage : une feuille de papier peut être recyclée plusieurs fois." },
+    { kind:'timer', icon:'🎨', title:'Décoration créative', sub:"37–45 min", seconds:480,
+      say:"Décorez votre feuille pendant qu'elle est encore humide : confettis, gouttes de colorant (et feuilles ou pétales si on en a) — tout va se fixer dans les fibres !",
+      list:["Distribuer les confettis","Presser délicatement chaque élément dans la pâte humide","On peut ajouter une goutte de colorant sur les bords pour varier"],
+      memo:"Si un enfant demande « pourquoi les confettis restent collés ? » : en séchant, les fibres de papier se referment autour des éléments décoratifs et les emprisonnent." },
     { kind:'info', icon:'⏳', title:'Pressage et séchage', sub:"45–50 min",
-      say:"On presse une dernière fois avec une éponge propre, puis on met la feuille de côté : elle va sécher tranquillement pendant plusieurs jours.",
-      list:["Presser chaque feuille avec une éponge propre","Ranger les feuilles côte à côte, à plat, loin des courants d'air","On récupérera les feuilles sèches à la prochaine séance !"],
-      memo:"Si un enfant demande « pourquoi ça met autant de temps à sécher ? » : il faut que toute l'eau s'évapore des fibres pour que la feuille devienne solide et rigide — ça prend plusieurs jours à l'air libre." },
+      say:"On éponge une dernière fois, puis on met la feuille de côté : elle va sécher tranquillement pendant plusieurs jours.",
+      list:["Éponger chaque feuille doucement","Ranger les feuilles à plat sur leur essuie-tout prénom, loin des courants d'air","Garder la pâte restante dans un sac ou la laisser sécher en boule : elle pourra resservir","On récupérera les feuilles sèches à la prochaine séance !","S'il reste du temps : fiche d'observation (sinon, on la fera à la prochaine séance en récupérant les feuilles)"],
+      memo:"Si un enfant demande « pourquoi ça met autant de temps à sécher ? » : il faut que toute l'eau s'évapore des fibres pour que la feuille devienne solide et rigide — ça prend plusieurs jours à l'air libre.\n\nAnti-gaspi : la pâte restante peut être réhydratée plus tard pour une autre séance ou pour le groupe suivant." },
     { kind:'quiz', icon:'🎓', title:'Quiz des papetiers', sub:"50–56 min · si le temps manque, on le fera la semaine prochaine",
       questions:[
         { q:"Le papier recyclé, on le fabrique surtout à partir de…", options:["Bois tout neuf","Vieux papiers","Métal"], correct:1, explain:"On recycle les vieux papiers : pas besoin de couper de nouveaux arbres !" },
-        { q:"Comment s'appelle la pâte humide de fibres de papier ?", options:["Pâte à modeler","Pâte à papier","Pâte à tarte"], correct:1, explain:"C'est la pâte à papier : un mélange de fibres de papier et d'eau." },
+        { q:"Dans l'entonnoir avec l'essuie-tout, qu'est-ce qui passe à travers ?", options:["Les fibres","L'eau","Rien du tout"], correct:1, explain:"L'eau passe à travers le filtre, mais les fibres restent dessus : c'est comme ça qu'on les récupère pour faire une feuille." },
         { q:"Pourquoi c'est important de recycler le papier ?", options:["Pour économiser des arbres et de l'eau","Pour que ce soit plus cher","Ça ne sert à rien"], correct:0, explain:"Recycler le papier permet d'économiser des arbres, de l'eau et de l'énergie." }
       ] },
     { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
-      say:"D'où vient notre nouvelle feuille de papier ? … De vieux papiers recyclés, transformés en pâte, puis égouttés et pressés !",
-      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer la fabrication avec leurs mots","Ranger et essuyer le matériel tous ensemble"],
+      say:"D'où vient notre nouvelle feuille de papier ? … De vieux papiers trempés, écrasés en pâte, puis égouttés, aplatis et séchés !",
+      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer la fabrication avec leurs mots","Ranger : vider l'eau du bac, mettre la pâte restante dans un sac, et laisser le matériel sur place (il sera récupéré et nettoyé)"],
       timer:240,
-      memo:"RÉCAP si besoin : on a trempé du vieux papier dans l'eau, on l'a mixé en pâte, puis on a utilisé un tamis pour récupérer les fibres sous forme de nouvelle feuille. C'est ça, le recyclage du papier !" },
+      memo:"RÉCAP si besoin : on a trempé du vieux papier dans l'eau, on l'a écrasé en pâte à la main, puis on a égoutté et aplati les fibres pour former une nouvelle feuille. C'est ça, le recyclage du papier !" },
     { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
     { kind:'end', icon:'🔍', title:'La semaine prochaine', teaser:"Encre invisible — on découvre une réaction chimique et la chaleur qui révèle des messages secrets !" }
   ];
@@ -202,9 +214,9 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
 
   const DEFINITIONS = {
     "Fibres":"Les toutes petites fibres qui composent le papier — on les voit quand on déchire une feuille mouillée.",
-    "Pâte à papier":"Le mélange de fibres de papier et d'eau, une fois le vieux papier trempé puis mixé.",
+    "Pâte à papier":"Le mélange de fibres de papier et d'eau, une fois le vieux papier trempé puis écrasé.",
     "Recyclage":"Transformer un objet usagé en quelque chose de nouveau, au lieu de le jeter.",
-    "Tamis":"La partie grillagée du moule qui retient les fibres et laisse passer l'eau.",
+    "Filtre":"Ce qui retient les fibres et laisse passer l'eau — ici, l'essuie-tout dans l'entonnoir.",
     "Texture":"Ce qu'on ressent au toucher : lisse, rugueux, épais, fin…",
     "Séchage":"Le temps que met l'eau à s'évaporer des fibres pour que la feuille devienne solide."
 
@@ -311,10 +323,10 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         <div class="steptitle">Le Papier Recyclé</div>
         <div class="stepsub">Séance 2 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
         <div class="card"><h3>Objectif de la séance</h3>
-          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Transformer du vieux papier en une toute nouvelle feuille, colorée et texturée, comme un vrai artisan papetier !</p>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Transformer du vieux papier en une toute nouvelle feuille, colorée et texturée, comme un vrai artisan papetier — en réutilisant le matériel de la séance 1 !</p>
         </div>
         <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Pas de stress sur le temps</span>Chaque étape indique sa durée estimée pour tenir dans l'heure. Si on n'a pas fini, ce n'est pas grave : on reprend le quiz ou le débrief à la séance suivante.</div>
-        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Tamis</span><span>Texture</span></div>
+        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Filtre</span><span>Texture</span></div>
         <a class="filelink" href="fiches/Fiche-observation-Seance-2-Papier.pdf" download>📄 Télécharger la fiche d'observation (PDF)</a>
         <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
       `;
@@ -382,7 +394,7 @@ footer{flex:none;display:flex;align-items:center;justify-content:space-between;g
         <div class="stepicon">${step.icon}</div>
         <div class="steptitle">${escapeHtml(step.title)}</div>
         <div class="stepsub">Vous êtes maintenant de vrais artisans papetiers !</div>
-        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Tamis</span><span>Texture</span><span>Séchage</span></div>
+        <div class="vocab"><span>Fibres</span><span>Pâte à papier</span><span>Recyclage</span><span>Filtre</span><span>Texture</span><span>Séchage</span></div>
       `;
     } else if(step.kind === 'end'){
       html = `
