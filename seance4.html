@@ -1,0 +1,509 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Animateur — Lait Magique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --paper:#FFF9F7; --paper-alt:#FBE9EE; --ink:#2B1017; --ink-soft:#6E4552; --ink-faint:#A98995;
+  --brand:#A30E44; --brand-ink:#FFF3F6; --brand-soft:#F6D3DE;
+  --good:#2F7D52; --good-bg:#E3F1E7; --warn:#A9670A; --warn-bg:#FAEED2; --bad:#B23B3B; --bad-bg:#FAE5E3;
+  --line:#F0D5DD; --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,16,23,.05), 0 10px 24px rgba(43,16,23,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+    --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+    --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+    --line:#3A2429; --card:#221519;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+  --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+  --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+  --line:#3A2429; --card:#221519;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Nunito',Arial,sans-serif;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Baloo 2',Georgia,serif;margin:0;}
+
+header{flex:none;display:flex;flex-direction:column;gap:8px;padding:14px 18px calc(10px + env(safe-area-inset-top,0px)) 18px;background:var(--brand);color:var(--brand-ink);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hbrand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;opacity:.92;}
+.hstep{font-weight:700;font-size:13px;opacity:.92;}
+.progress{height:6px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;}
+.progress > i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .35s ease;}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px 18px 28px;}
+.stage{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.stepicon{font-size:44px;text-align:center;}
+.steptitle{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--brand);text-align:center;text-wrap:balance;}
+.stepsub{font-size:14px;color:var(--ink-soft);text-align:center;font-weight:600;}
+
+.say{background:var(--paper-alt);border-left:5px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15.5px;font-weight:700;line-height:1.45;font-style:italic;color:var(--ink);}
+.say .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:5px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.card h3{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+
+.checklist{display:flex;flex-direction:column;gap:2px;}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 4px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14.5px;}
+.citem:hover{background:var(--paper-alt);}
+.citem .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s,border-color .15s;}
+.citem.done .box{background:var(--good);border-color:var(--good);color:#fff;}
+.citem.done span.txt{color:var(--ink-faint);text-decoration:line-through;}
+
+.timerbox{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.timerbig{font-family:'Baloo 2',serif;font-weight:700;font-size:clamp(44px,12vw,64px);color:var(--brand);font-variant-numeric:tabular-nums;}
+.timerbtns{display:flex;gap:10px;}
+
+.quizq{font-size:16px;font-weight:800;text-align:center;margin-bottom:4px;}
+.quizopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{font-family:inherit;font-weight:700;font-size:14.5px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .08s, border-color .15s, background .15s;}
+.qopt:hover{transform:translateY(-1px);}
+.qopt.correct{background:var(--good-bg);border-color:var(--good);}
+.qopt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+.qopt:disabled{cursor:default;}
+.qexplain{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper-alt);border-radius:10px;padding:11px 14px;display:none;}
+.qexplain.show{display:block;}
+
+.vote{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.vote button{font-family:inherit;font-weight:800;font-size:14px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:11px 20px;cursor:pointer;}
+.vote button.picked{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);}
+
+.scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
+
+.vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);cursor:pointer;}
+.vocab span:hover{border-color:var(--brand);}
+
+.popover-backdrop{position:fixed;inset:0;z-index:59;}
+.popover{position:fixed;z-index:60;width:260px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;line-height:1.45;color:var(--ink);}
+.popover .term{display:block;font-family:'Baloo 2',serif;font-weight:700;color:var(--brand);font-size:14.5px;margin-bottom:4px;}
+
+.memo{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:var(--paper-alt);}
+.memo summary{cursor:pointer;padding:12px 14px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);list-style:none;display:flex;align-items:center;gap:7px;}
+.memo summary::-webkit-details-marker{display:none;}
+.memo summary::before{content:"▸";font-size:11px;transition:transform .15s;}
+.memo[open] summary::before{transform:rotate(90deg);}
+.memo .memobody{padding:0 14px 14px;font-size:13px;line-height:1.65;font-weight:600;color:var(--ink-soft);white-space:pre-line;}
+
+.bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
+.bigbtn:active{transform:translateY(1px);}
+
+.filelink{align-self:center;display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--brand);text-decoration:none;border:2px solid var(--line);border-radius:999px;padding:9px 16px;background:var(--card);}
+.filelink:hover{border-color:var(--brand);}
+
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);}
+.navbtn{font-family:'Baloo 2',serif;font-weight:700;font-size:14.5px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 18px;cursor:pointer;}
+.navbtn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent;}
+.navbtn:disabled{opacity:.4;cursor:not-allowed;}
+.dots{display:flex;gap:5px;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.dots i.on{background:var(--brand);}
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="hbrand">🧪 Les P'tits Chimistes</div>
+    <div class="hstep" id="hStep"></div>
+  </div>
+  <div class="progress"><i id="progFill"></i></div>
+</header>
+<main><div class="stage" id="stage"></div></main>
+<footer>
+  <button class="navbtn" id="prevBtn" type="button">◀ Précédent</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="nextBtn" type="button">Suivant ▶</button>
+</footer>
+
+<script>
+(function(){
+  const STEPS = [
+    { kind:'title' },
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"Même si c'est du lait, on ne le boit pas : on y a mis du colorant et du liquide vaisselle ! On ne touche pas le lait avec les doigts, on utilise seulement le coton-tige. Et on ne bouge pas l'assiette, sinon tout se renverse.",
+      list:["On ne boit jamais le lait de l'expérience","On touche le lait seulement avec le coton-tige","L'assiette reste posée à plat sur la table","On garde le coton-tige loin des yeux et de la bouche"],
+      memo:"ALLERGIES : vérifier avant la séance si un enfant est allergique au lait. Si c'est le cas, il fait l'expérience avec de l'eau (étape « On ajuste »), ou il observe et manipule le coton-tige sans toucher le lait." },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"On réutilise un maximum de matériel des séances 1 à 3 !",
+      items:[
+        "♻️ Colorant alimentaire — plusieurs couleurs si possible",
+        "♻️ Curcuma — une pincée saupoudrée sur le lait donne du jaune en plus",
+        "♻️ Liquide vaisselle",
+        "♻️ Coton-tiges — 2 par enfant",
+        "♻️ Gobelets : un avec un peu de liquide vaisselle pour tremper les coton-tiges, un avec de l'eau pour la comparaison",
+        "♻️ Confettis de papier, les plus petits possibles",
+        "♻️ Éponges, torchons et essuie-tout",
+        "🆕 Lait entier (environ 1 L pour toute la séance)",
+        "🆕 Assiettes creuses, 1 pour 2-3 enfants (à défaut : le fond des 2 bacs, avec 1 cm de lait)",
+        "Avant l'arrivée : vérifier les allergies au lait, sortir le lait du frigo un peu à l'avance"
+      ],
+      memo:"POURQUOI DU LAIT ENTIER ? C'est le gras du lait qui rend l'expérience spectaculaire : plus le lait est gras, plus les couleurs « dansent ». Avec du lait écrémé, ça marche beaucoup moins bien.\n\nCURCUMA : saupoudré en fine pluie sur le lait, il reste à la surface et fuit d'un coup quand on pose le coton-tige, comme les confettis. Pratique s'il manque une couleur !\n\nUN SEUL COLORANT ? Ça marche quand même ! Mettre des gouttes à plusieurs endroits de l'assiette : on verra la couleur fuir et tourbillonner.\n\nQUANTITÉ : il suffit d'un fond de lait (environ 1 cm) dans chaque assiette. Si on utilise les bacs, il faudra plus de lait." },
+    { kind:'info', icon:'👋', title:'Accueil et rappel de la méthode', sub:"0–5 min",
+      say:"Bienvenue chimistes ! On se souvient de la règle d'or : je regarde, j'écoute, puis j'expérimente. Aujourd'hui, on va faire danser des couleurs… dans du lait ! Et on apprend un nouveau truc de chimiste : l'essai témoin, pour être sûr de ce qu'on voit.",
+      list:["Rappeler la règle d'or à voix haute, tous ensemble","Se souvenir en 1 phrase de l'encre invisible de la semaine dernière : le bicarbonate, une base, a été révélé par le chou rouge","Nouvelle étape de la méthode : l'essai témoin = le même essai, mais sans l'ingrédient qu'on teste (aujourd'hui : un coton-tige sec, puis de l'eau à la place du lait)","Former des petits groupes de 2-3 enfants, un par assiette"],
+      timer:300 },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
+      say:"Je verse du lait dans l'assiette et j'ajoute des gouttes de colorant. Maintenant, je vais toucher le lait avec un coton-tige trempé dans du liquide vaisselle. À votre avis, qu'est-ce qui va se passer ?",
+      options:["Rien du tout","Les couleurs vont bouger","Le lait va mousser"],
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes.",
+      memo:"RÉPONSE RÉELLE : les couleurs vont fuir et tourbillonner dans tous les sens, comme si elles dansaient !\n\nÇa ne mousse pas comme le volcan : il n'y a pas d'acide ni de base ici, et on ne remue pas." },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"9–15 min",
+      say:"Je touche d'abord le lait avec un coton-tige tout sec… il ne se passe rien. Maintenant, je trempe le coton-tige dans le liquide vaisselle, je le pose au milieu du lait… et je ne bouge plus. Regardez les couleurs !",
+      items:["Verser environ 1 cm de lait dans l'assiette","Ajouter 4-5 gouttes de colorant, près du centre, sans les mélanger","Toucher le lait avec un coton-tige sec : il ne se passe rien","Tremper le coton-tige dans le liquide vaisselle","Poser le bout au centre du lait et le laisser immobile 10 secondes","Nommer ce qu'on voit : « les couleurs fuient, elles tourbillonnent ! »"],
+      memo:"Le coton-tige sec sert de preuve : ce n'est pas le coton-tige qui fait bouger les couleurs, c'est le liquide vaisselle.\n\nSi un enfant demande « pourquoi les couleurs fuient ? » : le liquide vaisselle casse la « peau » invisible à la surface du lait. La surface s'ouvre d'un coup et emporte les couleurs vers les bords.\n\nSi un enfant demande « pourquoi ça continue de bouger ? » : le liquide vaisselle va attraper le gras du lait petit à petit, et ça crée des courants qui font tourbillonner les couleurs." },
+    { kind:'timer', icon:'🎨', title:'Chacun son tableau magique', sub:"15–30 min", seconds:900,
+      say:"À vous ! Dans votre assiette : du lait, quelques gouttes de colorant, et chacun votre tour, vous posez votre coton-tige magique. On ne remue pas : on pose, et on regarde !",
+      list:["Verser le lait dans chaque assiette (c'est l'intervenant qui verse)","Chaque groupe ajoute ses gouttes de colorant","À tour de rôle, chaque enfant trempe son coton-tige dans le liquide vaisselle et le pose dans le lait","Essayer à différents endroits : au centre, près d'une goutte, au bord","Quand les couleurs ne bougent plus, recharger le coton-tige en liquide vaisselle"],
+      memo:"Si un enfant demande « pourquoi ça bouge moins la 2e fois ? » : le liquide vaisselle s'est déjà étalé partout à la surface. Il faut en remettre un peu, ou ajouter quelques gouttes de colorant à un nouvel endroit.\n\nSi un enfant demande « pourquoi les couleurs se mélangent ? » : les courants mélangent les couleurs entre elles, comme quand on mélange de la peinture : bleu + jaune = vert !\n\nAstuce : quand l'assiette devient toute marron, on peut la vider dans un bac et recommencer avec un fond de lait propre." },
+    { kind:'timer', icon:'🧪', title:'On ajuste : et avec de l\'eau ?', sub:"30–38 min", seconds:480,
+      say:"Et si on remplace le lait par de l'eau ? Est-ce que les couleurs vont danser pareil ? On vote, puis on essaie !",
+      list:["Vote à main levée : « avec de l'eau, ça va danser pareil / moins / plus ? »","Mettre un fond d'eau dans une assiette, ajouter des gouttes de colorant","Poser un coton-tige trempé dans le liquide vaisselle","Comparer avec l'assiette de lait : où est-ce que les couleurs bougent le plus ?"],
+      memo:"RÉSULTAT ATTENDU : avec l'eau, le colorant s'étale tout seul et se mélange vite. Le liquide vaisselle le pousse un peu au premier contact, mais il n'y a presque pas de tourbillons ensuite.\n\nPOURQUOI ? L'eau n'a pas de gras. Dans le lait, c'est le gras qui, en s'accrochant au liquide vaisselle, fait tourbillonner les couleurs longtemps.\n\nC'est aussi la version à proposer aux enfants allergiques au lait." },
+    { kind:'info', icon:'🏃', title:'Les confettis qui fuient', sub:"38–43 min",
+      say:"Je pose des tout petits confettis à la surface de l'eau… Ils flottent, tenus par la peau invisible de l'eau. Maintenant, je touche le centre avec mon coton-tige magique… Regardez : ils s'enfuient vers les bords !",
+      list:["Remplir un gobelet ou une assiette d'eau","Saupoudrer délicatement de tout petits confettis à la surface","Toucher le centre avec un coton-tige trempé dans le liquide vaisselle","Observer les confettis fuir d'un coup vers les bords"],
+      timer:300,
+      memo:"C'est la même chose que dans le lait : le liquide vaisselle casse la « peau » de l'eau au centre, et le reste de la surface tire les confettis vers les bords. Ici, on n'a que la première partie du phénomène, sans le gras.\n\nAstuce : utiliser des confettis très petits et les poser délicatement, sinon ils se mouillent et coulent. Il faut changer l'eau entre deux essais, car une fois le liquide vaisselle ajouté, ça ne marche plus." },
+    { kind:'info', icon:'💡', title:'Pourquoi ça marche ?', sub:"43–50 min",
+      say:"À la surface du lait et de l'eau, il y a une sorte de peau invisible : c'est la tension superficielle. Le liquide vaisselle casse cette peau, et la surface emporte les couleurs vers les bords. Puis il attrape le gras du lait, et ça fait des tourbillons !",
+      list:["Redire les mots tension superficielle et matières grasses","Rappeler les 2 preuves : le coton-tige sec ne fait rien, et avec l'eau ça tourbillonne beaucoup moins","Le grand tri des séances : volcan et encre invisible = réactions chimiques (un nouveau produit apparaît : du gaz, une nouvelle couleur) ; papier recyclé et lait magique = rien de nouveau n'apparaît, les produits bougent ou se mélangent","Faire le lien avec la vaisselle : c'est pour attraper le gras qu'on utilise du liquide vaisselle !"],
+      memo:"RÉCAP : la tension superficielle, c'est comme une peau très fine à la surface d'un liquide (c'est elle qui permet à certains insectes de marcher sur l'eau). Le liquide vaisselle l'affaiblit d'un coup : la surface s'ouvre et emporte les couleurs. Ensuite, le liquide vaisselle s'accroche au gras du lait et le fait bouger : ce sont ces mouvements qui font danser les couleurs.\n\nSi un enfant demande « c'est une réaction chimique comme le volcan ? » : pas vraiment ! Il n'y a pas de gaz, pas de nouveau produit. Les produits bougent et se mélangent, mais ne se transforment pas." },
+    { kind:'quiz', icon:'🎓', title:'Quiz des chimistes', sub:"50–56 min · si le temps manque, on le fera la semaine prochaine",
+      questions:[
+        { q:"Qu'est-ce qui fait danser les couleurs dans le lait ?", options:["Le coton-tige","Le liquide vaisselle","La couleur elle-même"], correct:1, explain:"Le coton-tige sec ne fait rien : c'est le liquide vaisselle qui fait bouger les couleurs." },
+        { q:"La « peau » invisible à la surface d'un liquide s'appelle…", options:["La tension superficielle","La croûte","La pellicule magique"], correct:0, explain:"C'est la tension superficielle : le liquide vaisselle la casse, et la surface emporte les couleurs." },
+        { q:"Pourquoi ça tourbillonne plus dans le lait que dans l'eau ?", options:["Parce que le lait est blanc","Parce que le lait contient du gras","Parce que l'eau est froide"], correct:1, explain:"Le liquide vaisselle attrape le gras du lait, ce qui crée des courants qui font tourbillonner les couleurs." }
+      ] },
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
+      say:"Pourquoi les couleurs ont-elles dansé ? … Le liquide vaisselle a cassé la peau invisible du lait, puis il a attrapé le gras, et ça a fait des tourbillons !",
+      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer avec leurs mots","Ranger : vider les assiettes dans un bac puis dans l'évier, rincer les assiettes, jeter les coton-tiges, essuyer les tables"],
+      timer:240,
+      memo:"RÉCAP si besoin : le lait a une « peau » invisible (la tension superficielle) et contient du gras. Le liquide vaisselle casse la peau et attrape le gras : ça crée des courants qui emportent les couleurs." },
+    { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
+    { kind:'end', icon:'🥄', title:'La semaine prochaine', teaser:"Ça se dissout ? — on joue aux détectives pour découvrir les produits qui disparaissent dans l'eau… mais qui sont toujours là !" }
+  ];
+
+  const STORAGE_KEY = 'laitGuideStep';
+  let idx = 0;
+  try{ const s = parseInt(localStorage.getItem(STORAGE_KEY)||'',10); if(!isNaN(s) && s>=0 && s<STEPS.length) idx = s; }catch(e){}
+
+  let voteCounts = {};
+  let quizState = STEPS.find(s=>s.kind==='quiz') ? STEPS.find(s=>s.kind==='quiz').questions.map(()=>null) : [];
+  const checklistState = {};
+  let AC = null;
+  function beep(){
+    try{
+      AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.18].forEach((d,i)=>{
+        const o=AC.createOscillator(), g=AC.createGain();
+        o.type='triangle'; o.frequency.value = i===0?880:1180;
+        const t=AC.currentTime+d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.18,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.32);
+      });
+    }catch(e){}
+  }
+
+  function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const DEFINITIONS = {
+    "Tension superficielle":"Une sorte de peau invisible à la surface d'un liquide. C'est elle qui fait flotter les confettis et permet à certains insectes de marcher sur l'eau.",
+    "Matières grasses":"Le gras contenu dans le lait (et dans le beurre ou l'huile). Le liquide vaisselle est fait pour l'attraper.",
+    "Courant":"Un mouvement à l'intérieur d'un liquide, qui emporte les couleurs avec lui.",
+    "Mélange":"Quand on met plusieurs produits ensemble : ici, le lait, le colorant et le liquide vaisselle.",
+    "Hypothèse":"Une idée qu'on propose avant de vérifier par l'expérience.",
+    "Témoin":"Le même essai, mais sans l'ingrédient qu'on teste. Si le témoin ne fait rien, c'est la preuve que c'est bien cet ingrédient qui agit !",
+    "Savon":"Un produit qui casse la « peau » de l'eau et attrape le gras : c'est pour ça que le liquide vaisselle lave la vaisselle !"
+  };
+  function closePopover(){
+    if(window._pop){ window._pop.backdrop.remove(); window._pop.pop.remove(); window._pop=null; }
+  }
+  function showPopover(anchor, term, def){
+    closePopover();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'popover-backdrop';
+    backdrop.addEventListener('click', closePopover);
+    const pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = `<span class="term">${escapeHtml(term)}</span>${escapeHtml(def)}`;
+    document.body.appendChild(backdrop);
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const pw = 260;
+    let left = Math.min(Math.max(16, r.left), window.innerWidth - pw - 16);
+    let top = r.bottom + 8;
+    if(top + 90 > window.innerHeight) top = Math.max(16, r.top - 90);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    window._pop = {backdrop, pop};
+  }
+  function wireVocab(container){
+    container.querySelectorAll('.vocab span').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const term = el.textContent;
+        const def = DEFINITIONS[term];
+        if(def) showPopover(el, term, def);
+      });
+    });
+  }
+
+  function renderMemo(step){
+    if(!step.memo) return '';
+    return `<details class="memo"><summary>🧠 Mémo tuteur — pour répondre aux questions</summary><div class="memobody">${escapeHtml(step.memo)}</div></details>`;
+  }
+
+  function renderSayAndList(step){
+    let html = '';
+    if(step.say) html += `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>`;
+    if(step.list) html += `<div class="card"><h3>Consignes</h3><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;font-weight:600;">${step.list.map(l=>`<li>${escapeHtml(l)}</li>`).join('')}</ul></div>`;
+    return html;
+  }
+
+  let timerHandle = null, timerLeft = 0, timerRunning = false;
+  function stopTimer(){ if(timerHandle){ clearInterval(timerHandle); timerHandle=null; } timerRunning=false; }
+  function formatT(s){ const m=Math.floor(s/60), r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
+
+  function renderTimerBlock(seconds){
+    timerLeft = seconds;
+    return `<div class="card timerbox">
+      <h3>Minuteur</h3>
+      <div class="timerbig" id="timerDisp">${formatT(timerLeft)}</div>
+      <div class="timerbtns">
+        <button class="navbtn primary" id="timerStart" type="button">▶ Démarrer</button>
+        <button class="navbtn" id="timerReset" type="button">↺ Réinitialiser</button>
+      </div>
+    </div>`;
+  }
+  function wireTimer(seconds){
+    const disp = document.getElementById('timerDisp');
+    const startBtn = document.getElementById('timerStart');
+    const resetBtn = document.getElementById('timerReset');
+    if(!disp) return;
+    stopTimer();
+    timerLeft = seconds;
+    disp.textContent = formatT(timerLeft);
+    startBtn.addEventListener('click', () => {
+      if(timerRunning){ stopTimer(); startBtn.textContent = '▶ Démarrer'; return; }
+      timerRunning = true; startBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        timerLeft--;
+        if(timerLeft <= 0){ timerLeft = 0; disp.textContent = formatT(0); stopTimer(); startBtn.textContent = '▶ Démarrer'; beep(); return; }
+        disp.textContent = formatT(timerLeft);
+      }, 1000);
+    });
+    resetBtn.addEventListener('click', () => {
+      stopTimer(); timerLeft = seconds; disp.textContent = formatT(timerLeft); startBtn.textContent = '▶ Démarrer';
+    });
+  }
+
+  function render(){
+    const step = STEPS[idx];
+    document.getElementById('hStep').textContent = `Étape ${idx+1} / ${STEPS.length}`;
+    document.getElementById('progFill').style.width = Math.round((idx)/(STEPS.length-1)*100) + '%';
+    const dots = document.getElementById('dots');
+    dots.innerHTML = STEPS.map((_,i)=>`<i class="${i===idx?'on':''}"></i>`).join('');
+    document.getElementById('prevBtn').disabled = idx === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.textContent = idx === STEPS.length-1 ? 'Terminer ✓' : 'Suivant ▶';
+
+    const stage = document.getElementById('stage');
+    let html = '';
+
+    if(step.kind === 'title'){
+      html = `
+        <div class="stepicon">🥛</div>
+        <div class="steptitle">Le Lait Magique</div>
+        <div class="stepsub">Séance 4 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="card"><h3>Objectif de la séance</h3>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Faire danser des couleurs dans du lait avec une goutte de liquide vaisselle, et découvrir la « peau » invisible des liquides : la tension superficielle !</p>
+        </div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">♻️ On recycle notre matériel</span>Cette séance réutilise le colorant, le liquide vaisselle, les gobelets, les coton-tiges et les confettis des séances 1 à 3 — seuls le lait et les assiettes sont nouveaux !</div>
+        <div class="vocab"><span>Tension superficielle</span><span>Matières grasses</span><span>Courant</span><span>Mélange</span><span>Témoin</span></div>
+        <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
+      `;
+    } else if(step.kind === 'info'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${step.timer ? renderTimerBlock(step.timer) : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'checklist'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="card"><h3>À cocher au fur et à mesure</h3>
+          <div class="checklist">
+            ${step.items.map((it,i)=>{
+              const key = idx+'-'+i;
+              const done = !!checklistState[key];
+              return `<div class="citem ${done?'done':''}" data-key="${key}"><span class="box">${done?'✓':''}</span><span class="txt">${escapeHtml(it)}</span></div>`;
+            }).join('')}
+          </div>
+        </div>
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'vote'){
+      const picked = voteCounts[idx];
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>
+        <div class="card">
+          <h3>Vote à main levée</h3>
+          <div class="vote">
+            ${step.options.map((o,i)=>`<button type="button" data-vote="${i}" class="${picked===i?'picked':''}">${escapeHtml(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'timer'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${renderTimerBlock(step.seconds)}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'quiz'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="scoretag" id="scoreTag"></div>
+        <div id="quizList" style="display:flex;flex-direction:column;gap:18px;"></div>
+      `;
+    } else if(step.kind === 'vocabend'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="stepsub">Vous êtes maintenant de vrais chimistes des surfaces !</div>
+        <div class="vocab"><span>Tension superficielle</span><span>Matières grasses</span><span>Courant</span><span>Mélange</span><span>Témoin</span><span>Savon</span></div>
+      `;
+    } else if(step.kind === 'end'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="card"><p style="margin:0;font-size:15px;font-weight:700;text-align:center;">${escapeHtml(step.teaser)}</p></div>
+      `;
+    }
+
+    stage.innerHTML = html;
+
+    if(step.kind === 'title'){
+      document.getElementById('startBtn').addEventListener('click', () => go(idx+1));
+    }
+    if(step.kind === 'checklist'){
+      stage.querySelectorAll('.citem').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          checklistState[key] = !checklistState[key];
+          el.classList.toggle('done', !!checklistState[key]);
+          el.querySelector('.box').textContent = checklistState[key] ? '✓' : '';
+        });
+      });
+    }
+    if(step.kind === 'vote'){
+      stage.querySelectorAll('[data-vote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          voteCounts[idx] = parseInt(btn.dataset.vote,10);
+          stage.querySelectorAll('[data-vote]').forEach(b => b.classList.toggle('picked', b===btn));
+        });
+      });
+    }
+    if((step.kind === 'info' && step.timer) || step.kind === 'timer'){
+      wireTimer(step.kind==='timer' ? step.seconds : step.timer);
+    }
+    if(step.kind === 'quiz'){
+      renderQuiz(step);
+    }
+    wireVocab(stage);
+
+    saveStep();
+  }
+
+  function renderQuiz(step){
+    const list = document.getElementById('quizList');
+    function updateScore(){
+      const answered = quizState.filter(v=>v!==null).length;
+      const correct = quizState.filter((v,i)=>v===step.questions[i].correct).length;
+      document.getElementById('scoreTag').textContent = `Score : ${correct} / ${answered || step.questions.length} bonnes réponses`;
+    }
+    list.innerHTML = step.questions.map((q,qi) => `
+      <div class="card">
+        <div class="quizq">${qi+1}. ${escapeHtml(q.q)}</div>
+        <div class="quizopts" data-qi="${qi}">
+          ${q.options.map((o,oi)=>`<button type="button" class="qopt" data-oi="${oi}">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div class="qexplain" id="explain-${qi}">${escapeHtml(q.explain)}</div>
+      </div>
+    `).join('');
+    step.questions.forEach((q, qi) => {
+      const group = list.querySelector(`.quizopts[data-qi="${qi}"]`);
+      const already = quizState[qi];
+      if(already !== null){
+        group.querySelectorAll('.qopt').forEach((b,oi) => {
+          b.disabled = true;
+          if(oi === q.correct) b.classList.add('correct');
+          if(oi === already && already !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById(`explain-${qi}`).classList.add('show');
+      }
+      group.querySelectorAll('.qopt').forEach((btn, oi) => {
+        btn.addEventListener('click', () => {
+          if(quizState[qi] !== null) return;
+          quizState[qi] = oi;
+          group.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+          btn.classList.add(oi === q.correct ? 'correct' : 'wrong');
+          if(oi !== q.correct) group.children[q.correct].classList.add('correct');
+          document.getElementById(`explain-${qi}`).classList.add('show');
+          if(oi === q.correct) beep();
+          updateScore();
+        });
+      });
+    });
+    updateScore();
+  }
+
+  function go(n){
+    stopTimer();
+    closePopover();
+    idx = Math.max(0, Math.min(STEPS.length-1, n));
+    render();
+    document.getElementById('stage').scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(idx === STEPS.length-1){ window.location.href = 'index.html'; return; }
+    go(idx+1);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

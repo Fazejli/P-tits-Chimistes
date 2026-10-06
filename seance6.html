@@ -1,0 +1,502 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Animateur — Flotte ou Coule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --paper:#FFF9F7; --paper-alt:#FBE9EE; --ink:#2B1017; --ink-soft:#6E4552; --ink-faint:#A98995;
+  --brand:#A30E44; --brand-ink:#FFF3F6; --brand-soft:#F6D3DE;
+  --good:#2F7D52; --good-bg:#E3F1E7; --warn:#A9670A; --warn-bg:#FAEED2; --bad:#B23B3B; --bad-bg:#FAE5E3;
+  --line:#F0D5DD; --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,16,23,.05), 0 10px 24px rgba(43,16,23,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+    --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+    --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+    --line:#3A2429; --card:#221519;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+  --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+  --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+  --line:#3A2429; --card:#221519;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Nunito',Arial,sans-serif;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Baloo 2',Georgia,serif;margin:0;}
+
+header{flex:none;display:flex;flex-direction:column;gap:8px;padding:14px 18px calc(10px + env(safe-area-inset-top,0px)) 18px;background:var(--brand);color:var(--brand-ink);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hbrand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;opacity:.92;}
+.hstep{font-weight:700;font-size:13px;opacity:.92;}
+.progress{height:6px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;}
+.progress > i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .35s ease;}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px 18px 28px;}
+.stage{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.stepicon{font-size:44px;text-align:center;}
+.steptitle{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--brand);text-align:center;text-wrap:balance;}
+.stepsub{font-size:14px;color:var(--ink-soft);text-align:center;font-weight:600;}
+
+.say{background:var(--paper-alt);border-left:5px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15.5px;font-weight:700;line-height:1.45;font-style:italic;color:var(--ink);}
+.say .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:5px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.card h3{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+
+.checklist{display:flex;flex-direction:column;gap:2px;}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 4px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14.5px;}
+.citem:hover{background:var(--paper-alt);}
+.citem .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s,border-color .15s;}
+.citem.done .box{background:var(--good);border-color:var(--good);color:#fff;}
+.citem.done span.txt{color:var(--ink-faint);text-decoration:line-through;}
+
+.timerbox{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.timerbig{font-family:'Baloo 2',serif;font-weight:700;font-size:clamp(44px,12vw,64px);color:var(--brand);font-variant-numeric:tabular-nums;}
+.timerbtns{display:flex;gap:10px;}
+
+.quizq{font-size:16px;font-weight:800;text-align:center;margin-bottom:4px;}
+.quizopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{font-family:inherit;font-weight:700;font-size:14.5px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .08s, border-color .15s, background .15s;}
+.qopt:hover{transform:translateY(-1px);}
+.qopt.correct{background:var(--good-bg);border-color:var(--good);}
+.qopt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+.qopt:disabled{cursor:default;}
+.qexplain{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper-alt);border-radius:10px;padding:11px 14px;display:none;}
+.qexplain.show{display:block;}
+
+.vote{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.vote button{font-family:inherit;font-weight:800;font-size:14px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:11px 20px;cursor:pointer;}
+.vote button.picked{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);}
+
+.scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
+
+.vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);cursor:pointer;}
+.vocab span:hover{border-color:var(--brand);}
+
+.popover-backdrop{position:fixed;inset:0;z-index:59;}
+.popover{position:fixed;z-index:60;width:260px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;line-height:1.45;color:var(--ink);}
+.popover .term{display:block;font-family:'Baloo 2',serif;font-weight:700;color:var(--brand);font-size:14.5px;margin-bottom:4px;}
+
+.memo{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:var(--paper-alt);}
+.memo summary{cursor:pointer;padding:12px 14px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);list-style:none;display:flex;align-items:center;gap:7px;}
+.memo summary::-webkit-details-marker{display:none;}
+.memo summary::before{content:"▸";font-size:11px;transition:transform .15s;}
+.memo[open] summary::before{transform:rotate(90deg);}
+.memo .memobody{padding:0 14px 14px;font-size:13px;line-height:1.65;font-weight:600;color:var(--ink-soft);white-space:pre-line;}
+
+.bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
+.bigbtn:active{transform:translateY(1px);}
+
+.filelink{align-self:center;display:inline-flex;align-items:center;gap:7px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--brand);text-decoration:none;border:2px solid var(--line);border-radius:999px;padding:9px 16px;background:var(--card);}
+.filelink:hover{border-color:var(--brand);}
+
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);}
+.navbtn{font-family:'Baloo 2',serif;font-weight:700;font-size:14.5px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 18px;cursor:pointer;}
+.navbtn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent;}
+.navbtn:disabled{opacity:.4;cursor:not-allowed;}
+.dots{display:flex;gap:5px;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.dots i.on{background:var(--brand);}
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="hbrand">🧪 Les P'tits Chimistes</div>
+    <div class="hstep" id="hStep"></div>
+  </div>
+  <div class="progress"><i id="progFill"></i></div>
+</header>
+<main><div class="stage" id="stage"></div></main>
+<footer>
+  <button class="navbtn" id="prevBtn" type="button">◀ Précédent</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="nextBtn" type="button">Suivant ▶</button>
+</footer>
+
+<script>
+(function(){
+  const STEPS = [
+    { kind:'title' },
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"Les bacs d'eau restent sur la table, on ne les déplace pas. On ne s'éclabousse pas, et si de l'eau tombe par terre, on l'essuie tout de suite pour ne pas glisser.",
+      list:["On garde les manches relevées","On pose les objets dans l'eau doucement, sans les lancer","On essuie l'eau renversée tout de suite pour ne pas glisser"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"Zéro achat : tout vient des séances précédentes !",
+      items:[
+        "♻️ Les 2 bacs (un par groupe), remplis d'eau aux 2/3 à l'arrivée",
+        "♻️ Pâte à modeler — une boule de la taille d'une balle de ping-pong par enfant",
+        "♻️ Objets à tester : 1 bouteille vide fermée, 1 bouteille pleine d'eau fermée, un bouchon, une cuillère, un crayon, une éponge, un gobelet, des confettis",
+        "♻️ Éponges, torchons et essuie-tout",
+        "♻️ Chutes de papier + crayons pour noter les records",
+        "Avant l'arrivée des enfants : couper la pâte en boules à peu près égales"
+      ],
+      memo:"PÂTE À MODELER : si elle a un peu séché depuis les séances 1 et 5, la malaxer quelques minutes dans les mains la rend à nouveau souple. Pas assez pour tout le monde ? On construit les bateaux par 2.\n\nIMPORTANT : tout le monde doit avoir la même quantité de pâte, sinon le concours n'est pas juste. Garder un petit morceau à part pour fabriquer les « passagers » (petites boules de la taille d'un petit pois).\n\nLES BOUTEILLES : la 3e bouteille (Evian 1 L, en réserve) peut servir de bouteille pleine. La même bouteille vide flotte, pleine d'eau elle s'enfonce presque entièrement : parfait pour la discussion !" },
+    { kind:'info', icon:'👋', title:'Accueil et rappel de la méthode', sub:"0–5 min",
+      say:"Bienvenue chimistes ! On se souvient de la règle d'or : je regarde, j'écoute, puis j'expérimente. Aujourd'hui, on devient des ingénieurs : on va construire des bateaux ! Et on apprend un dernier truc de chimiste : faire un concours juste, et mesurer en comptant.",
+      list:["Rappeler la règle d'or à voix haute, tous ensemble","Se souvenir des 2 dernières séances : les confettis flottaient à la surface du lait magique, et la pâte à modeler restait au fond du gobelet. Pourquoi l'un flotte et l'autre coule ? On va le découvrir !","Nouvelle étape de la méthode : un test juste — tout le monde a la même quantité de pâte, on ne change qu'une chose : la forme — et on mesure en comptant les passagers","Former 2 groupes d'environ 7-8 enfants, un par bac","Tour de table : « Qu'est-ce qui flotte dans votre bain ? »"],
+      timer:300 },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
+      say:"Je vais poser cette boule de pâte à modeler dans l'eau. À votre avis, elle va…",
+      options:["Flotter","Couler","Je ne sais pas"],
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes.",
+      memo:"RÉPONSE RÉELLE : elle coule ! Une boule de pâte à modeler coule toujours, même petite.\n\nSi un enfant demande « pourquoi ? » : on va le découvrir ensemble tout de suite — et on va même réussir à faire flotter cette même pâte…" },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"9–15 min",
+      say:"La boule a coulé… Je la récupère, et je change seulement sa forme : je fais une petite barque avec des bords. Je la pose sur l'eau… elle flotte ! C'est la même pâte, le même poids. Qu'est-ce qui a changé ?",
+      items:["Poser la boule de pâte dans le bac : elle coule","La récupérer et l'essuyer","Lui donner une forme de barque creuse avec des bords hauts","La poser doucement sur l'eau : elle flotte !","Demander : « Qu'est-ce qui a changé ? » → seulement la forme","Introduire les mots flotter, couler et poussée de l'eau"],
+      memo:"POUSSÉE DE L'EAU = l'eau pousse vers le haut tout ce qu'on met dedans. On le sent quand on essaie d'enfoncer un ballon dans la piscine !\n\nPOURQUOI LA BARQUE FLOTTE : en forme de barque, la pâte prend beaucoup plus de place dans l'eau (elle est pleine d'air). Plus un objet prend de place dans l'eau, plus l'eau le pousse fort vers le haut.\n\nAstuce : bien fermer les trous et faire des bords assez hauts, sinon l'eau rentre et la barque coule." },
+    { kind:'timer', icon:'🔍', title:'Flotte ou coule ?', sub:"15–25 min", seconds:600,
+      say:"Dans chaque groupe, on va tester plein d'objets ! Avant de poser chaque objet dans le bac, on vote : il va flotter ou couler ? Puis on vérifie !",
+      list:["Les objets à tester : bouteille vide fermée, bouteille pleine, bouchon, cuillère, crayon, éponge, gobelet, confettis","Avant chaque essai : vote à main levée « flotte / coule »","Un enfant différent pose l'objet dans l'eau à chaque fois","On note les résultats sur une feuille en 2 colonnes : 🛟 flotte / ⚓ coule","L'intervenant passe d'un groupe à l'autre pour relancer les questions"],
+      memo:"RÉSULTATS ATTENDUS :\n• Bouteille vide fermée → flotte (elle est pleine d'air).\n• Bouteille pleine d'eau → s'enfonce presque entièrement : même bouteille, mais sans air !\n• Bouchon, crayon (bois) → flottent.\n• Cuillère → en métal elle coule ; en plastique elle flotte souvent.\n• Éponge → flotte, puis s'enfonce un peu en se remplissant d'eau.\n• Gobelet posé à l'endroit → flotte comme un bateau ; si on le remplit d'eau, il s'enfonce.\n• Confettis → flottent, puis coulent une fois imbibés d'eau.\n\nSi un enfant dit « les objets lourds coulent » : pas toujours ! Un énorme bateau est très lourd et il flotte. Ce qui compte aussi, c'est la forme et l'air à l'intérieur." },
+    { kind:'timer', icon:'🛠️', title:'Le chantier naval', sub:"25–37 min", seconds:720,
+      say:"À votre tour d'être ingénieurs ! Chacun reçoit la même boule de pâte à modeler. Votre mission : fabriquer le bateau qui pourra porter le plus de passagers sans couler !",
+      list:["Distribuer une boule de pâte de même taille à chaque enfant","Fabriquer un bateau creux, avec des bords et sans trous","Tester son bateau vide dans le bac : est-ce qu'il flotte ?","S'il coule : on le récupère, on l'essuie et on l'améliore !","Pendant ce temps, l'intervenant roule des petits passagers (boules de la taille d'un petit pois)"],
+      memo:"ASTUCES pour un bateau qui porte beaucoup :\n• Un fond large et plat, le plus fin possible (sans trou !).\n• Des bords assez hauts pour que l'eau ne rentre pas.\n\nLes plus petits peuvent faire une simple barque ; les plus grands peuvent chercher la meilleure forme (ronde, carrée, longue…).\n\nSi un enfant demande « pourquoi mon bateau penche ? » : le poids n'est pas bien réparti ; on peut rendre un côté un peu plus fin ou poser les passagers au centre." },
+    { kind:'timer', icon:'🏆', title:'Le grand concours des cargos', sub:"37–47 min", seconds:600,
+      say:"Le grand concours commence ! On pose les passagers un par un dans le bateau, et on compte tous ensemble à voix haute. Combien de passagers votre bateau peut-il porter avant de couler ?",
+      list:["Dans chaque bac, on teste 2-3 bateaux à la fois","Poser les passagers un par un, bien au centre du bateau","Compter ensemble à voix haute : « 1, 2, 3… »","Noter le record de chaque bateau sur la feuille","Comparer les formes des bateaux qui ont porté le plus de passagers"],
+      memo:"RÉSULTAT ATTENDU : les bateaux larges, fins et avec des bords hauts portent le plus de passagers. Ils prennent beaucoup de place dans l'eau, donc l'eau les pousse fort vers le haut.\n\nQuand le bateau coule, c'est que les passagers sont devenus trop lourds par rapport à la poussée de l'eau, ou que l'eau est passée par-dessus les bords.\n\nAnti-gaspi : à la fin, on récupère toute la pâte et on la laisse sécher en boules, elle pourra resservir." },
+    { kind:'info', icon:'🧪', title:'Pourquoi ça marche ?', sub:"47–51 min",
+      say:"L'eau pousse vers le haut tout ce qu'on met dedans : c'est la poussée de l'eau. Une boule prend peu de place dans l'eau, l'eau la pousse peu : elle coule. Un bateau large prend beaucoup de place dans l'eau, l'eau le pousse fort : il flotte !",
+      list:["Redire les mots flotter, couler et poussée de l'eau","Montrer côte à côte le bateau gagnant et une boule de pâte : même quantité de pâte, formes différentes","Faire le lien avec les vrais bateaux en métal, qui flottent grâce à leur forme creuse pleine d'air"],
+      memo:"Pour les plus grands : c'est le principe d'Archimède, un savant grec de l'Antiquité. Un objet flotte quand l'eau qu'il pousse sur le côté pèse autant que lui.\n\nSi un enfant demande « et les sous-marins ? » : ils remplissent des réservoirs d'eau pour couler, et les vident (en les remplissant d'air) pour remonter — comme notre bouteille vide ou pleine !" },
+    { kind:'quiz', icon:'🎓', title:'Quiz des ingénieurs', sub:"51–56 min · si le temps manque, on le fera la semaine prochaine",
+      questions:[
+        { q:"Une boule de pâte à modeler posée dans l'eau…", options:["Flotte","Coule","Fond comme du sucre"], correct:1, explain:"La boule coule, car elle prend très peu de place dans l'eau : l'eau ne la pousse pas assez fort." },
+        { q:"Pour faire flotter la même pâte à modeler, il faut…", options:["Lui donner une forme de bateau creux, avec des bords","La rendre plus lourde","La colorer"], correct:0, explain:"En forme de bateau, la pâte prend beaucoup de place dans l'eau : l'eau la pousse plus fort vers le haut, et elle flotte !" },
+        { q:"Pourquoi un énorme bateau en métal peut-il flotter ?", options:["Parce que le métal est léger","Parce que sa forme creuse, pleine d'air, prend beaucoup de place dans l'eau","C'est de la magie"], correct:1, explain:"Le métal est lourd, mais la coque creuse remplie d'air prend énormément de place dans l'eau : la poussée de l'eau suffit à le porter." }
+      ] },
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"56–60 min",
+      say:"Pourquoi notre bateau flotte alors que la boule coule ? … Parce que sa forme prend plus de place dans l'eau, et l'eau le pousse plus fort vers le haut !",
+      list:["Reprendre le vocabulaire du jour ensemble","Demander à 2-3 enfants d'expliquer avec leurs mots","Bilan des 6 séances : demander aux enfants de citer leur expérience préférée et ce qu'ils ont appris","Ranger : vider les bacs, récupérer la pâte à modeler, essuyer les tables et le sol"],
+      timer:240,
+      memo:"RÉCAP si besoin : ce n'est pas seulement le poids qui compte, c'est aussi la forme. Un objet creux et plein d'air prend beaucoup de place dans l'eau, donc l'eau le pousse fort vers le haut : il flotte.\n\nBILAN DES 6 SÉANCES si le temps le permet :\n• Réactions chimiques : le volcan (acide + base = gaz) et l'encre invisible (indicateur qui change de couleur).\n• Mélanges et transformations sans nouveau produit : le papier recyclé, le lait magique, la dissolution.\n• Les forces de l'eau : la peau de l'eau (lait magique) et la poussée de l'eau (bateaux).\n• La méthode du chimiste, construite séance après séance : hypothèse → observer → essai témoin → tableau de résultats → test juste et mesure." },
+    { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
+    { kind:'end', icon:'🎉', title:'À la prochaine séance', teaser:"Bravo les P'tits Chimistes ! En 6 séances, vous avez fait des réactions chimiques, des mélanges, et découvert les forces de l'eau — avec la vraie méthode des scientifiques : hypothèse, observation, témoin, tableau et mesure !" }
+  ];
+
+  const STORAGE_KEY = 'flotteGuideStep';
+  let idx = 0;
+  try{ const s = parseInt(localStorage.getItem(STORAGE_KEY)||'',10); if(!isNaN(s) && s>=0 && s<STEPS.length) idx = s; }catch(e){}
+
+  let voteCounts = {};
+  let quizState = STEPS.find(s=>s.kind==='quiz') ? STEPS.find(s=>s.kind==='quiz').questions.map(()=>null) : [];
+  const checklistState = {};
+  let AC = null;
+  function beep(){
+    try{
+      AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.18].forEach((d,i)=>{
+        const o=AC.createOscillator(), g=AC.createGain();
+        o.type='triangle'; o.frequency.value = i===0?880:1180;
+        const t=AC.currentTime+d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.18,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.32);
+      });
+    }catch(e){}
+  }
+
+  function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const DEFINITIONS = {
+    "Flotter":"Rester à la surface de l'eau sans s'enfoncer jusqu'au fond.",
+    "Couler":"S'enfoncer dans l'eau jusqu'au fond.",
+    "Poussée de l'eau":"La force avec laquelle l'eau pousse vers le haut tout ce qu'on met dedans.",
+    "Forme":"L'allure d'un objet : boule, galette, bateau… Avec la même pâte, changer la forme peut faire flotter ou couler !",
+    "Hypothèse":"Une idée qu'on propose avant de vérifier par l'expérience.",
+    "Cargaison":"Ce qu'un bateau transporte — ici, nos petits passagers en pâte à modeler."
+  };
+  function closePopover(){
+    if(window._pop){ window._pop.backdrop.remove(); window._pop.pop.remove(); window._pop=null; }
+  }
+  function showPopover(anchor, term, def){
+    closePopover();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'popover-backdrop';
+    backdrop.addEventListener('click', closePopover);
+    const pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = `<span class="term">${escapeHtml(term)}</span>${escapeHtml(def)}`;
+    document.body.appendChild(backdrop);
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const pw = 260;
+    let left = Math.min(Math.max(16, r.left), window.innerWidth - pw - 16);
+    let top = r.bottom + 8;
+    if(top + 90 > window.innerHeight) top = Math.max(16, r.top - 90);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    window._pop = {backdrop, pop};
+  }
+  function wireVocab(container){
+    container.querySelectorAll('.vocab span').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const term = el.textContent;
+        const def = DEFINITIONS[term];
+        if(def) showPopover(el, term, def);
+      });
+    });
+  }
+
+  function renderMemo(step){
+    if(!step.memo) return '';
+    return `<details class="memo"><summary>🧠 Mémo tuteur — pour répondre aux questions</summary><div class="memobody">${escapeHtml(step.memo)}</div></details>`;
+  }
+
+  function renderSayAndList(step){
+    let html = '';
+    if(step.say) html += `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>`;
+    if(step.list) html += `<div class="card"><h3>Consignes</h3><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;font-weight:600;">${step.list.map(l=>`<li>${escapeHtml(l)}</li>`).join('')}</ul></div>`;
+    return html;
+  }
+
+  let timerHandle = null, timerLeft = 0, timerRunning = false;
+  function stopTimer(){ if(timerHandle){ clearInterval(timerHandle); timerHandle=null; } timerRunning=false; }
+  function formatT(s){ const m=Math.floor(s/60), r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
+
+  function renderTimerBlock(seconds){
+    timerLeft = seconds;
+    return `<div class="card timerbox">
+      <h3>Minuteur</h3>
+      <div class="timerbig" id="timerDisp">${formatT(timerLeft)}</div>
+      <div class="timerbtns">
+        <button class="navbtn primary" id="timerStart" type="button">▶ Démarrer</button>
+        <button class="navbtn" id="timerReset" type="button">↺ Réinitialiser</button>
+      </div>
+    </div>`;
+  }
+  function wireTimer(seconds){
+    const disp = document.getElementById('timerDisp');
+    const startBtn = document.getElementById('timerStart');
+    const resetBtn = document.getElementById('timerReset');
+    if(!disp) return;
+    stopTimer();
+    timerLeft = seconds;
+    disp.textContent = formatT(timerLeft);
+    startBtn.addEventListener('click', () => {
+      if(timerRunning){ stopTimer(); startBtn.textContent = '▶ Démarrer'; return; }
+      timerRunning = true; startBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        timerLeft--;
+        if(timerLeft <= 0){ timerLeft = 0; disp.textContent = formatT(0); stopTimer(); startBtn.textContent = '▶ Démarrer'; beep(); return; }
+        disp.textContent = formatT(timerLeft);
+      }, 1000);
+    });
+    resetBtn.addEventListener('click', () => {
+      stopTimer(); timerLeft = seconds; disp.textContent = formatT(timerLeft); startBtn.textContent = '▶ Démarrer';
+    });
+  }
+
+  function render(){
+    const step = STEPS[idx];
+    document.getElementById('hStep').textContent = `Étape ${idx+1} / ${STEPS.length}`;
+    document.getElementById('progFill').style.width = Math.round((idx)/(STEPS.length-1)*100) + '%';
+    const dots = document.getElementById('dots');
+    dots.innerHTML = STEPS.map((_,i)=>`<i class="${i===idx?'on':''}"></i>`).join('');
+    document.getElementById('prevBtn').disabled = idx === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.textContent = idx === STEPS.length-1 ? 'Terminer ✓' : 'Suivant ▶';
+
+    const stage = document.getElementById('stage');
+    let html = '';
+
+    if(step.kind === 'title'){
+      html = `
+        <div class="stepicon">⛵</div>
+        <div class="steptitle">Flotte ou Coule ?</div>
+        <div class="stepsub">Séance 6 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="card"><h3>Objectif de la séance</h3>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Découvrir pourquoi certains objets flottent et d'autres coulent, puis construire un bateau en pâte à modeler capable de porter le plus de passagers possible !</p>
+        </div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">♻️ Zéro achat</span>Cette séance n'utilise que du matériel déjà en stock : les 2 bacs, la pâte à modeler, les bouteilles, les éponges et quelques petits objets des séances précédentes.</div>
+        <div class="vocab"><span>Flotter</span><span>Couler</span><span>Poussée de l'eau</span><span>Forme</span><span>Hypothèse</span></div>
+        <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
+      `;
+    } else if(step.kind === 'info'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${step.timer ? renderTimerBlock(step.timer) : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'checklist'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="card"><h3>À cocher au fur et à mesure</h3>
+          <div class="checklist">
+            ${step.items.map((it,i)=>{
+              const key = idx+'-'+i;
+              const done = !!checklistState[key];
+              return `<div class="citem ${done?'done':''}" data-key="${key}"><span class="box">${done?'✓':''}</span><span class="txt">${escapeHtml(it)}</span></div>`;
+            }).join('')}
+          </div>
+        </div>
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'vote'){
+      const picked = voteCounts[idx];
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>
+        <div class="card">
+          <h3>Vote à main levée</h3>
+          <div class="vote">
+            ${step.options.map((o,i)=>`<button type="button" data-vote="${i}" class="${picked===i?'picked':''}">${escapeHtml(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'timer'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${renderTimerBlock(step.seconds)}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'quiz'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="scoretag" id="scoreTag"></div>
+        <div id="quizList" style="display:flex;flex-direction:column;gap:18px;"></div>
+      `;
+    } else if(step.kind === 'vocabend'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="stepsub">Vous êtes maintenant de vrais ingénieurs des bateaux !</div>
+        <div class="vocab"><span>Flotter</span><span>Couler</span><span>Poussée de l'eau</span><span>Forme</span><span>Hypothèse</span><span>Cargaison</span></div>
+      `;
+    } else if(step.kind === 'end'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="card"><p style="margin:0;font-size:15px;font-weight:700;text-align:center;">${escapeHtml(step.teaser)}</p></div>
+      `;
+    }
+
+    stage.innerHTML = html;
+
+    if(step.kind === 'title'){
+      document.getElementById('startBtn').addEventListener('click', () => go(idx+1));
+    }
+    if(step.kind === 'checklist'){
+      stage.querySelectorAll('.citem').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          checklistState[key] = !checklistState[key];
+          el.classList.toggle('done', !!checklistState[key]);
+          el.querySelector('.box').textContent = checklistState[key] ? '✓' : '';
+        });
+      });
+    }
+    if(step.kind === 'vote'){
+      stage.querySelectorAll('[data-vote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          voteCounts[idx] = parseInt(btn.dataset.vote,10);
+          stage.querySelectorAll('[data-vote]').forEach(b => b.classList.toggle('picked', b===btn));
+        });
+      });
+    }
+    if((step.kind === 'info' && step.timer) || step.kind === 'timer'){
+      wireTimer(step.kind==='timer' ? step.seconds : step.timer);
+    }
+    if(step.kind === 'quiz'){
+      renderQuiz(step);
+    }
+    wireVocab(stage);
+
+    saveStep();
+  }
+
+  function renderQuiz(step){
+    const list = document.getElementById('quizList');
+    function updateScore(){
+      const answered = quizState.filter(v=>v!==null).length;
+      const correct = quizState.filter((v,i)=>v===step.questions[i].correct).length;
+      document.getElementById('scoreTag').textContent = `Score : ${correct} / ${answered || step.questions.length} bonnes réponses`;
+    }
+    list.innerHTML = step.questions.map((q,qi) => `
+      <div class="card">
+        <div class="quizq">${qi+1}. ${escapeHtml(q.q)}</div>
+        <div class="quizopts" data-qi="${qi}">
+          ${q.options.map((o,oi)=>`<button type="button" class="qopt" data-oi="${oi}">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div class="qexplain" id="explain-${qi}">${escapeHtml(q.explain)}</div>
+      </div>
+    `).join('');
+    step.questions.forEach((q, qi) => {
+      const group = list.querySelector(`.quizopts[data-qi="${qi}"]`);
+      const already = quizState[qi];
+      if(already !== null){
+        group.querySelectorAll('.qopt').forEach((b,oi) => {
+          b.disabled = true;
+          if(oi === q.correct) b.classList.add('correct');
+          if(oi === already && already !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById(`explain-${qi}`).classList.add('show');
+      }
+      group.querySelectorAll('.qopt').forEach((btn, oi) => {
+        btn.addEventListener('click', () => {
+          if(quizState[qi] !== null) return;
+          quizState[qi] = oi;
+          group.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+          btn.classList.add(oi === q.correct ? 'correct' : 'wrong');
+          if(oi !== q.correct) group.children[q.correct].classList.add('correct');
+          document.getElementById(`explain-${qi}`).classList.add('show');
+          if(oi === q.correct) beep();
+          updateScore();
+        });
+      });
+    });
+    updateScore();
+  }
+
+  function go(n){
+    stopTimer();
+    closePopover();
+    idx = Math.max(0, Math.min(STEPS.length-1, n));
+    render();
+    document.getElementById('stage').scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(idx === STEPS.length-1){ window.location.href = 'index.html'; return; }
+    go(idx+1);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
