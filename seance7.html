@@ -1,0 +1,538 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guide Animateur — L'air, ce truc invisible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap">
+<style>
+:root{
+  --paper:#FFF9F7; --paper-alt:#FBE9EE; --ink:#2B1017; --ink-soft:#6E4552; --ink-faint:#A98995;
+  --brand:#A30E44; --brand-ink:#FFF3F6; --brand-soft:#F6D3DE;
+  --good:#2F7D52; --good-bg:#E3F1E7; --warn:#A9670A; --warn-bg:#FAEED2; --bad:#B23B3B; --bad-bg:#FAE5E3;
+  --line:#F0D5DD; --card:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,16,23,.05), 0 10px 24px rgba(43,16,23,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+    --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+    --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+    --line:#3A2429; --card:#221519;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1B1114; --paper-alt:#241419; --ink:#F5E7EA; --ink-soft:#CBAAB4; --ink-faint:#87707A;
+  --brand:#F2839E; --brand-ink:#2B0E16; --brand-soft:#3B1B24;
+  --good:#79CB9C; --good-bg:#173423; --warn:#E9B75A; --warn-bg:#33260C; --bad:#E48A8A; --bad-bg:#3A1E1E;
+  --line:#3A2429; --card:#221519;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Nunito',Arial,sans-serif;display:flex;flex-direction:column;}
+h1,h2,h3{font-family:'Baloo 2',Georgia,serif;margin:0;}
+
+header{flex:none;display:flex;flex-direction:column;gap:8px;padding:14px 18px calc(10px + env(safe-area-inset-top,0px)) 18px;background:var(--brand);color:var(--brand-ink);}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hbrand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;opacity:.92;}
+.hstep{font-weight:700;font-size:13px;opacity:.92;}
+.progress{height:6px;border-radius:4px;background:rgba(255,255,255,.28);overflow:hidden;}
+.progress > i{display:block;height:100%;background:#fff;border-radius:4px;transition:width .35s ease;}
+
+main{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:22px 18px 28px;}
+.stage{width:100%;max-width:640px;display:flex;flex-direction:column;gap:16px;}
+
+.stepicon{font-size:44px;text-align:center;}
+.steptitle{font-size:clamp(22px,4vw,30px);font-weight:800;color:var(--brand);text-align:center;text-wrap:balance;}
+.stepsub{font-size:14px;color:var(--ink-soft);text-align:center;font-weight:600;}
+
+.say{background:var(--paper-alt);border-left:5px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15.5px;font-weight:700;line-height:1.45;font-style:italic;color:var(--ink);}
+.say .lbl{display:block;font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:5px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+.card h3{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+
+.checklist{display:flex;flex-direction:column;gap:2px;}
+.citem{display:flex;align-items:center;gap:10px;padding:9px 4px;border-radius:9px;cursor:pointer;font-weight:700;font-size:14.5px;}
+.citem:hover{background:var(--paper-alt);}
+.citem .box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .15s,border-color .15s;}
+.citem.done .box{background:var(--good);border-color:var(--good);color:#fff;}
+.citem.done span.txt{color:var(--ink-faint);text-decoration:line-through;}
+
+.timerbox{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.timerbig{font-family:'Baloo 2',serif;font-weight:700;font-size:clamp(44px,12vw,64px);color:var(--brand);font-variant-numeric:tabular-nums;}
+.timerbtns{display:flex;gap:10px;}
+
+.quizq{font-size:16px;font-weight:800;text-align:center;margin-bottom:4px;}
+.quizopts{display:flex;flex-direction:column;gap:10px;}
+.qopt{font-family:inherit;font-weight:700;font-size:14.5px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .08s, border-color .15s, background .15s;}
+.qopt:hover{transform:translateY(-1px);}
+.qopt.correct{background:var(--good-bg);border-color:var(--good);}
+.qopt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+.qopt:disabled{cursor:default;}
+.qexplain{font-size:13.5px;font-weight:600;color:var(--ink-soft);background:var(--paper-alt);border-radius:10px;padding:11px 14px;display:none;}
+.qexplain.show{display:block;}
+
+.vote{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.vote button{font-family:inherit;font-weight:800;font-size:14px;border:2px solid var(--line);background:var(--card);border-radius:999px;padding:11px 20px;cursor:pointer;}
+.vote button.picked{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);}
+
+.scoretag{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:18px;color:var(--brand);background:var(--paper-alt);border-radius:999px;padding:8px 18px;}
+
+.retenir{display:flex;flex-direction:column;gap:12px;}
+.retenir .r{display:flex;gap:14px;align-items:flex-start;background:var(--paper-alt);border-radius:12px;padding:14px 16px;}
+.retenir .r .n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',serif;font-weight:700;font-size:17px;}
+.retenir .r .t{font-size:16px;font-weight:800;line-height:1.4;}
+.retenir .r .p{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-top:3px;}
+
+.vocab{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.vocab span{background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:700;font-size:12.5px;color:var(--brand);cursor:pointer;}
+.vocab span:hover{border-color:var(--brand);}
+
+.popover-backdrop{position:fixed;inset:0;z-index:59;}
+.popover{position:fixed;z-index:60;width:260px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);font-size:13px;font-weight:600;line-height:1.45;color:var(--ink);}
+.popover .term{display:block;font-family:'Baloo 2',serif;font-weight:700;color:var(--brand);font-size:14.5px;margin-bottom:4px;}
+
+.memo{border:1.5px dashed var(--line);border-radius:12px;overflow:hidden;background:var(--paper-alt);}
+.memo summary{cursor:pointer;padding:12px 14px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--brand);list-style:none;display:flex;align-items:center;gap:7px;}
+.memo summary::-webkit-details-marker{display:none;}
+.memo summary::before{content:"▸";font-size:11px;transition:transform .15s;}
+.memo[open] summary::before{transform:rotate(90deg);}
+.memo .memobody{padding:0 14px 14px;font-size:13px;line-height:1.65;font-weight:600;color:var(--ink-soft);white-space:pre-line;}
+
+.bigbtn{align-self:center;font-family:'Baloo 2',serif;font-weight:700;font-size:16px;border:none;background:var(--brand);color:var(--brand-ink);border-radius:14px;padding:14px 30px;cursor:pointer;box-shadow:var(--shadow);}
+.bigbtn:active{transform:translateY(1px);}
+
+footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);}
+.navbtn{font-family:'Baloo 2',serif;font-weight:700;font-size:14.5px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 18px;cursor:pointer;}
+.navbtn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent;}
+.navbtn:disabled{opacity:.4;cursor:not-allowed;}
+.dots{display:flex;gap:5px;}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.dots i.on{background:var(--brand);}
+[hidden]{display:none!important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="hbrand">🧪 Les P'tits Chimistes</div>
+    <div class="hstep" id="hStep"></div>
+  </div>
+  <div class="progress"><i id="progFill"></i></div>
+</header>
+<main><div class="stage" id="stage"></div></main>
+<footer>
+  <button class="navbtn" id="prevBtn" type="button">◀ Précédent</button>
+  <div class="dots" id="dots"></div>
+  <button class="navbtn primary" id="nextBtn" type="button">Suivant ▶</button>
+</footer>
+
+<script>
+(function(){
+  const STEPS = [
+    { kind:'title' },
+    { kind:'info', icon:'⚠️', title:'Sécurité — à rappeler', say:"Aujourd'hui on joue avec de l'eau : on garde les manches relevées, on pose doucement les objets dans les bacs, et si de l'eau tombe par terre, on l'essuie tout de suite pour ne pas glisser. On ne souffle pas dans les bouteilles et on ne met rien à la bouche.",
+      list:["On garde les manches relevées","On plonge les objets doucement, sans éclabousser","On essuie l'eau renversée tout de suite pour ne pas glisser","On ne met jamais une bouteille ou un gobelet à la bouche"] },
+    { kind:'checklist', icon:'🧰', title:'Matériel à préparer', sub:"Zéro achat : tout vient des séances précédentes !",
+      items:[
+        "♻️ Les 2 bacs, remplis d'eau le plus haut possible (au moins 10 cm d'eau)",
+        "♻️ Gobelets : 2 par groupe (un pour l'essuie-tout, un de rechange)",
+        "♻️ Essuie-tout : plusieurs feuilles par groupe",
+        "♻️ 1 entonnoir par groupe si possible (sinon, on se le partage à tour de rôle)",
+        "♻️ Les bouteilles vides (2 par groupe si possible, sinon 1 + 1 de réserve) avec leur bouchon",
+        "♻️ Pâte à modeler, un crayon par groupe (pour percer la pâte)",
+        "♻️ Une éponge par groupe",
+        "♻️ Torchons et éponges pour essuyer, feuilles + crayons pour la fiche",
+        "Avant l'arrivée des enfants : coller un trait de repère sur le bac (niveau d'eau) si on veut aussi montrer que le niveau monte, facultatif",
+        "Avant l'arrivée des enfants : préparer la fiche : une feuille pliée en 3 colonnes « Je pense » / « Je vois » / « Je comprends »"
+      ],
+      memo:"PAS D'ENTONNOIR EN DOUBLE ? Un seul entonnoir pour 2 groupes : le groupe 1 fait l'expérience 2 pendant que le groupe 2 fait l'expérience 3, puis on échange.\n\nBAC TROP PEU PROFOND ? Pour l'expérience 1, il faut que le gobelet puisse être enfoncé bien droit presque jusqu'au fond. Avec un bac peu profond, on peut utiliser un grand saladier ou une bouteille de 1,5 L coupée (à faire à l'avance par l'intervenant).\n\nLA FICHE « JE PENSE / JE VOIS / JE COMPRENDS » : c'est le fil rouge de la séance. À chaque expérience, avant de tester, chacun écrit ou dessine ce qu'il pense (hypothèse), puis ce qu'il voit, puis ce qu'il a compris. Les plus jeunes dessinent ; les plus grands écrivent une phrase.\n\nCETTE SÉANCE EST DIFFÉRENTE : le but n'est pas de s'amuser avec les couleurs, mais de comprendre une chose précise : l'air existe, et il prend de la place. À la fin, chaque enfant doit pouvoir le dire avec ses mots." },
+    { kind:'info', icon:'🎯', title:'Ce qu\'on va apprendre', sub:"0–5 min",
+      say:"Bienvenue chimistes ! Aujourd'hui, une grande question : est-ce qu'on peut prouver que quelque chose existe… alors qu'on ne le voit pas ? Un vrai chimiste ne dit pas « je crois », il dit « je prouve » ! On va chercher la preuve que l'air existe.",
+      list:["Rappeler la règle d'or : je regarde, j'écoute, puis j'expérimente","Poser la grande question : « L'air, c'est quoi ? Est-ce qu'il y en a dans cette pièce ? » — laisser 3-4 enfants répondre sans corriger","Noter au tableau les idées des enfants (« c'est du vide », « c'est du vent », « on respire »…)","Annoncer l'objectif : apprendre 3 choses sur l'air, que l'on retiendra à la fin","Nouvelle étape de la méthode : « Je pense / Je vois / Je comprends » sur la fiche","Former 2 groupes d'environ 7-8 enfants, un par bac"],
+      timer:300,
+      memo:"IDÉES FRÉQUENTES CHEZ LES ENFANTS :\n• « L'air, c'est du vide / c'est rien » → c'est faux, et c'est justement ce qu'on va démonter ! L'air est une vraie matière, un gaz, invisible.\n• « L'air, c'est le vent » → le vent, c'est de l'air qui bouge. Il y a aussi de l'air quand il n'y a pas de vent.\n• « L'air, on le respire » → très bien, c'est un début de preuve !\n\nNE PAS CORRIGER TOUT DE SUITE : on garde ces idées au tableau, et on y reviendra à la fin pour voir si on a changé d'avis. C'est ça qui fait apprendre : confronter ce qu'on pensait à ce qu'on a vu." },
+    { kind:'vote', icon:'🤔', title:'Le mystère du jour', sub:"5–9 min",
+      say:"Je froisse une feuille d'essuie-tout au fond de ce gobelet. Je retourne le gobelet, et je l'enfonce tout droit dans l'eau, jusqu'au fond du bac. À votre avis, l'essuie-tout va être…",
+      options:["Mouillé","Sec","Je ne sais pas"],
+      note:"Il n'y a pas de mauvaise réponse à une hypothèse ! Compte les mains levées et clique sur l'option qui a le plus de votes. Chacun note son hypothèse dans la colonne « Je pense ».",
+      memo:"RÉPONSE RÉELLE : l'essuie-tout reste SEC ! Pourtant le gobelet est sous l'eau. C'est la première preuve que l'air existe : il y a de l'air dans le gobelet, il prend la place, et l'eau ne peut pas entrer.\n\nSi un enfant dit « mouillé parce qu'il y a de l'eau partout » : très bonne idée logique, et c'est ce que beaucoup de gens pensent ! Il suffit de vérifier.\n\nIMPORTANT : enfoncer le gobelet bien droit, sans l'incliner, sinon l'air s'échappe en bulles et l'essuie-tout se mouille." },
+    { kind:'checklist', icon:'🪄', title:'Démonstration guidée', sub:"9–15 min",
+      say:"Je froisse l'essuie-tout au fond du gobelet, je le coince bien. Je retourne le gobelet, et je l'enfonce tout droit dans l'eau. Qu'est-ce que vous voyez ? Je le ressors tout droit… et je regarde l'essuie-tout.",
+      items:["Froisser une feuille d'essuie-tout et la coincer bien au fond du gobelet","Retourner le gobelet, ouverture vers le bas","Enfoncer le gobelet TOUT DROIT dans l'eau, jusqu'au fond du bac","Le ressortir tout droit, sans l'incliner","Sortir l'essuie-tout et le toucher : il est sec !","Refaire en inclinant le gobelet sous l'eau : des bulles sortent, l'essuie-tout se mouille"],
+      memo:"CE QU'ON MONTRE : tant que le gobelet est droit, l'air reste prisonnier dedans. Il prend la place de l'eau, qui ne peut pas entrer. Quand on incline, l'air s'échappe en bulles, et l'eau prend sa place : l'essuie-tout se mouille.\n\nLE MOT DU JOUR : l'air est un gaz. On ne le voit pas, mais on peut le prouver : c'est ce qu'on appelle une preuve.\n\nSi un enfant demande « les bulles, c'est quoi ? » : c'est de l'air ! Quand on voit des bulles dans l'eau, c'est que de l'air voyage vers le haut.\n\nSi un enfant demande « pourquoi le gobelet ne se remplit pas ? » : parce que l'air est déjà dedans et qu'il n'a nulle part où aller. Deux choses ne peuvent pas être au même endroit en même temps." },
+    { kind:'timer', icon:'🥤', title:'Expérience 1 : le gobelet mystère', sub:"15–24 min", seconds:540,
+      say:"À vous de prouver que l'air existe ! Chacun à tour de rôle : on froisse l'essuie-tout, on enfonce le gobelet tout droit, on le ressort… et on touche l'essuie-tout. Sur votre fiche, vous écrivez ce que vous pensiez, ce que vous voyez, et ce que vous comprenez !",
+      list:["Chaque enfant passe à tour de rôle dans son groupe","Avant d'enfoncer : écrire « Je pense… » sur la fiche (sec ou mouillé)","Enfoncer tout droit, ressortir tout droit, toucher l'essuie-tout","Écrire « Je vois… » (l'essuie-tout est sec / mouillé) puis « Je comprends… »","Essayer d'incliner le gobelet sous l'eau : « Qu'est-ce qui sort ? »","Relancer à voix haute : « Comment on sait qu'il y a de l'air, alors qu'on ne le voit pas ? »"],
+      memo:"CE QU'ON VISE : que les enfants disent eux-mêmes « il y a de l'air dans le gobelet, il prend la place de l'eau ». Si un enfant dit « c'est le gobelet qui protège l'essuie-tout », demander : « Mais qu'est-ce qui empêche l'eau d'entrer par le dessous, alors que le gobelet est ouvert ? » → l'air.\n\nSI L'ESSUIE-TOUT EST UN PEU HUMIDE : ça arrive. Le gobelet était probablement légèrement incliné. C'est une bonne occasion de recommencer et de comparer.\n\nSI UN ENFANT DEMANDE « EST-CE QUE L'AIR A UN POIDS ? » : oui, mais très très léger. Beaucoup moins qu'un même volume d'eau. C'est pour ça que les bulles remontent.\n\nDÉMARCHE : la fiche en 3 colonnes aide les enfants à distinguer ce qu'ils croyaient, ce qu'ils ont observé et ce qu'ils en déduisent. C'est la base du raisonnement scientifique." },
+    { kind:'timer', icon:'🍾', title:'Expérience 2 : la bouteille têtue', sub:"24–34 min", seconds:600,
+      say:"Je pose l'entonnoir sur une bouteille vide. Je verse de l'eau : elle descend ! Maintenant, je bouche bien le tour de l'entonnoir avec de la pâte à modeler, pour qu'il ne reste plus aucun passage. Je verse de l'eau… À votre avis, elle va descendre ?",
+      list:["Vote avant l'essai : « l'eau va descendre / ne va pas descendre dans la bouteille »","Poser l'entonnoir sur la bouteille et verser un peu d'eau : elle descend (c'est le témoin)","Vider, puis boucher TOUT le tour du col avec de la pâte à modeler : aucun trou !","Verser de l'eau dans l'entonnoir : elle ne descend presque pas","Percer la pâte à modeler avec un crayon : l'eau se met à descendre en faisant des « glou glou »","Remplir la fiche : « Je pense / Je vois / Je comprends »"],
+      memo:"CE QU'ON OBSERVE : avec le tour du col bien bouché, l'eau reste dans l'entonnoir (quelques gouttes peuvent descendre au début, puis ça s'arrête). Dès qu'on perce la pâte, l'air peut sortir de la bouteille et l'eau descend en faisant « glou glou ».\n\nPOURQUOI ? La bouteille « vide » est en fait pleine d'air. Si l'air n'a aucune sortie, l'eau ne peut pas prendre sa place. En faisant un petit trou, on laisse l'air s'échapper vers le haut, pendant que l'eau descend.\n\nL'ESSAI TÉMOIN : le premier essai sans pâte à modeler est notre témoin (séance 4). Il montre que la bouteille peut se remplir si on laisse passer l'air.\n\nSI L'EAU NE S'ARRÊTE PAS : c'est que la pâte à modeler laisse un petit passage d'air. Bien presser tout autour du col et recommencer.\n\nSi un enfant dit « l'eau est trop lourde pour descendre » : poser la question « Mais pourquoi elle descend quand on perce un trou ? » → l'air peut sortir." },
+    { kind:'timer', icon:'🫧', title:'Expérience 3 : glou glou !', sub:"34–41 min", seconds:420,
+      say:"Je couche cette bouteille vide dans le bac, bouchon retiré, et je regarde. Des bulles sortent ! Et la bouteille se remplit d'eau… puis elle coule ! Qu'est-ce qui se passe ? Et avec l'éponge : regardez bien quand je la presse sous l'eau !",
+      list:["Vote avant : « la bouteille va-t-elle se remplir d'eau ? »","Coucher la bouteille ouverte dans le bac et regarder les bulles","Observer : la bouteille se remplit d'eau, puis elle coule","Rappeler la séance 6 : la bouteille vide flottait, pleine d'eau elle coulait !","Bonus : presser une éponge sous l'eau et regarder les bulles qui s'échappent","Écrire sur la fiche : « Je pense / Je vois / Je comprends »"],
+      memo:"CE QU'ON OBSERVE : des bulles d'air sortent de la bouteille en glou glou, et l'eau entre pour prendre leur place. Quand elle est pleine d'eau, la bouteille coule (comme en séance 6 : la bouteille vide flotte parce qu'elle est pleine d'air, pleine d'eau elle s'enfonce).\n\nLA PHRASE CLÉ : quand l'air sort, l'eau prend sa place.\n\nL'ÉPONGE : quand on la presse sous l'eau, des bulles sortent. L'éponge est pleine de petits trous remplis d'air ! Quand on relâche, l'eau rentre à la place de l'air.\n\nLIEN AVEC LA SÉANCE 1 : le gaz du volcan était lui aussi invisible, mais ce n'est pas le même gaz que l'air (c'est du gaz carbonique). Ce qu'on retient : un gaz, ça existe, même si on ne le voit pas, et ça prend de la place.\n\nSI UN ENFANT DEMANDE « POURQUOI LES BULLES MONTENT ? » : l'air est plus léger que l'eau, donc l'eau pousse les bulles vers le haut (comme la poussée de l'eau de la séance 6)." },
+    { kind:'info', icon:'🧪', title:'Pourquoi ça marche ?', sub:"41–47 min",
+      say:"Dans le gobelet, dans la bouteille, dans l'éponge : il y avait de l'air. On ne le voit pas, mais on a trouvé trois preuves : l'essuie-tout sec, l'eau qui ne descend pas, et les bulles. Et l'air prend de la place : tant qu'il est là, l'eau ne peut pas y être.",
+      list:["Mettre en commun les fiches : qu'est-ce qu'on pensait ? Qu'est-ce qu'on a vu ? Qu'est-ce qu'on a compris ?","Revenir au tableau du début : « L'air, c'est du vide ? » → qui a changé d'avis ?","Faire dire par 2-3 enfants : « Comment on peut prouver que l'air existe ? »","Redire les mots : air, gaz, bulle, preuve"],
+      timer:360,
+      memo:"RÉCAP : l'air est un gaz. Un gaz est une matière invisible qui prend de la place. Si une place est occupée par de l'air, l'eau ne peut pas y entrer. Si l'air sort (bulles), l'eau prend sa place.\n\nPOURQUOI C'EST IMPORTANT : l'air est partout autour de nous, même si on ne le voit pas. On le respire, il gonfle un ballon, il fait voler une montgolfière, il fait flotter un bateau (séance 6 : un objet creux plein d'air flotte).\n\nÀ DIRE SI LES ENFANTS DEMANDENT « Y A-T-IL DE L'AIR DANS L'EAU ? » : oui, un peu ! C'est ce qui permet aux poissons de respirer. Quand on chauffe l'eau, on voit des petites bulles se former avant l'ébullition : c'est l'air dissous qui sort.\n\nPOUR LES PLUS GRANDS : l'air est un mélange de gaz (surtout de l'azote et de l'oxygène). On retrouve l'idée de « mélange » des séances précédentes !" },
+    { kind:'retenir', icon:'📌', title:'Ce qu\'on retient', sub:"47–51 min",
+      say:"Voilà ce qu'on a appris aujourd'hui. Je lis la phrase, et vous la redites avec vos mots !",
+      points:[
+        { t:"L'air existe, même si on ne le voit pas.", p:"Preuve : l'essuie-tout reste sec, les bulles sortent de la bouteille." },
+        { t:"L'air prend de la place.", p:"Il empêche l'eau d'entrer dans le gobelet ou dans la bouteille." },
+        { t:"Quand l'air sort, l'eau prend sa place.", p:"On le voit avec les bulles et le « glou glou »." }
+      ],
+      memo:"COMMENT FAIRE : lire une phrase, puis demander à 2-3 enfants de la reformuler avec leurs mots, sans regarder l'écran. Si un enfant la dit autrement mais juste, on valide !\n\nÀ LA FIN : demander « Qui pensait avant que l'air, c'était du vide ? Qui a changé d'avis ? » C'est la preuve qu'on a appris quelque chose aujourd'hui.\n\nLIEN AVEC LA MÉTHODE : on a fait « Je pense / Je vois / Je comprends » : c'est exactement la démarche des scientifiques." },
+    { kind:'quiz', icon:'🎓', title:'Quiz des chercheurs', sub:"51–57 min · si le temps manque, on le fera la semaine prochaine",
+      questions:[
+        { q:"« L'air, c'est du vide, il n'y a rien dedans. » C'est…", options:["Vrai","Faux : l'air est une matière invisible (un gaz)","On ne peut pas savoir"], correct:1, explain:"Faux ! L'air est un gaz : on ne le voit pas, mais il existe et il prend de la place. C'est ce qu'on a prouvé !" },
+        { q:"L'essuie-tout reste sec dans le gobelet retourné sous l'eau, parce que…", options:["Le gobelet est magique","L'air dans le gobelet prend la place de l'eau","L'eau n'aime pas le papier"], correct:1, explain:"L'air est prisonnier dans le gobelet : il prend la place, et l'eau ne peut pas entrer." },
+        { q:"Quand on voit des bulles sortir de la bouteille, c'est…", options:["De l'air qui sort et laisse la place à l'eau","De la poussière","De la mousse"], correct:0, explain:"Les bulles, c'est de l'air qui s'échappe. À sa place, l'eau peut entrer dans la bouteille." },
+        { q:"Pourquoi l'eau ne descend pas quand l'entonnoir est bien bouché ?", options:["Parce que l'air de la bouteille ne peut pas sortir","Parce que l'eau est trop lourde","Parce que l'entonnoir est trop petit"], correct:0, explain:"L'air de la bouteille n'a aucune sortie : il occupe toute la place, et l'eau ne peut pas descendre. Dès qu'on perce un trou, l'air sort et l'eau entre." }
+      ] },
+    { kind:'info', icon:'💬', title:'Débrief et rangement', sub:"57–60 min",
+      say:"Au début, qui pensait que l'air c'était du vide ? Et maintenant ? … Voilà : un vrai chimiste prouve ! Et l'air existe, même si on ne le voit pas.",
+      list:["Reprendre les 3 phrases de « Ce qu'on retient »","Demander à 2-3 enfants : « Qu'est-ce que vous avez appris aujourd'hui ? »","Ranger : vider les gobelets et les bouteilles dans le bac, essuyer les tables et le sol, ranger la pâte à modeler et l'entonnoir"],
+      timer:180,
+      memo:"IDÉE POUR LA MAISON : « Dans la baignoire ou dans une bassine, enfonce un verre à l'envers : est-ce que l'eau y entre ? » Un enfant peut refaire l'expérience seul et expliquer aux parents ce qu'il a prouvé." },
+    { kind:'vocabend', icon:'✅', title:'Séance terminée, bravo !' },
+    { kind:'end', icon:'💨', title:'À bientôt les chercheurs !', teaser:"Bravo les P'tits Chimistes ! Aujourd'hui, vous avez prouvé que l'air existe et qu'il prend de la place — comme de vrais scientifiques !" }
+  ];
+
+  const STORAGE_KEY = 'airGuideStep';
+  let idx = 0;
+  try{ const s = parseInt(localStorage.getItem(STORAGE_KEY)||'',10); if(!isNaN(s) && s>=0 && s<STEPS.length) idx = s; }catch(e){}
+
+  let voteCounts = {};
+  let quizState = STEPS.find(s=>s.kind==='quiz') ? STEPS.find(s=>s.kind==='quiz').questions.map(()=>null) : [];
+  const checklistState = {};
+  let AC = null;
+  function beep(){
+    try{
+      AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.18].forEach((d,i)=>{
+        const o=AC.createOscillator(), g=AC.createGain();
+        o.type='triangle'; o.frequency.value = i===0?880:1180;
+        const t=AC.currentTime+d;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.18,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+        o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.32);
+      });
+    }catch(e){}
+  }
+
+  function saveStep(){ try{ localStorage.setItem(STORAGE_KEY, String(idx)); }catch(e){} }
+
+  function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+  const DEFINITIONS = {
+    "Air":"Un gaz invisible qui nous entoure partout. On ne le voit pas, mais il existe et il prend de la place.",
+    "Gaz":"Une matière invisible qui prend de la place, comme l'air ou le gaz qui fait mousser le volcan.",
+    "Bulle":"De l'air (ou un gaz) prisonnier dans un liquide. Elle remonte à la surface.",
+    "Preuve":"Ce qui montre que quelque chose est vrai, même si on ne peut pas le voir.",
+    "Prendre de la place":"Quand quelque chose est quelque part, rien d'autre ne peut être au même endroit en même temps.",
+    "Hypothèse":"Une idée qu'on propose avant de vérifier par l'expérience."
+  };
+  function closePopover(){
+    if(window._pop){ window._pop.backdrop.remove(); window._pop.pop.remove(); window._pop=null; }
+  }
+  function showPopover(anchor, term, def){
+    closePopover();
+    const backdrop = document.createElement('div');
+    backdrop.className = 'popover-backdrop';
+    backdrop.addEventListener('click', closePopover);
+    const pop = document.createElement('div');
+    pop.className = 'popover';
+    pop.innerHTML = `<span class="term">${escapeHtml(term)}</span>${escapeHtml(def)}`;
+    document.body.appendChild(backdrop);
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const pw = 260;
+    let left = Math.min(Math.max(16, r.left), window.innerWidth - pw - 16);
+    let top = r.bottom + 8;
+    if(top + 90 > window.innerHeight) top = Math.max(16, r.top - 90);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    window._pop = {backdrop, pop};
+  }
+  function wireVocab(container){
+    container.querySelectorAll('.vocab span').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const term = el.textContent;
+        const def = DEFINITIONS[term];
+        if(def) showPopover(el, term, def);
+      });
+    });
+  }
+
+  function renderMemo(step){
+    if(!step.memo) return '';
+    return `<details class="memo"><summary>🧠 Mémo tuteur — pour répondre aux questions</summary><div class="memobody">${escapeHtml(step.memo)}</div></details>`;
+  }
+
+  function renderSayAndList(step){
+    let html = '';
+    if(step.say) html += `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>`;
+    if(step.list) html += `<div class="card"><h3>Consignes</h3><ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;font-weight:600;">${step.list.map(l=>`<li>${escapeHtml(l)}</li>`).join('')}</ul></div>`;
+    return html;
+  }
+
+  let timerHandle = null, timerLeft = 0, timerRunning = false;
+  function stopTimer(){ if(timerHandle){ clearInterval(timerHandle); timerHandle=null; } timerRunning=false; }
+  function formatT(s){ const m=Math.floor(s/60), r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0'); }
+
+  function renderTimerBlock(seconds){
+    timerLeft = seconds;
+    return `<div class="card timerbox">
+      <h3>Minuteur</h3>
+      <div class="timerbig" id="timerDisp">${formatT(timerLeft)}</div>
+      <div class="timerbtns">
+        <button class="navbtn primary" id="timerStart" type="button">▶ Démarrer</button>
+        <button class="navbtn" id="timerReset" type="button">↺ Réinitialiser</button>
+      </div>
+    </div>`;
+  }
+  function wireTimer(seconds){
+    const disp = document.getElementById('timerDisp');
+    const startBtn = document.getElementById('timerStart');
+    const resetBtn = document.getElementById('timerReset');
+    if(!disp) return;
+    stopTimer();
+    timerLeft = seconds;
+    disp.textContent = formatT(timerLeft);
+    startBtn.addEventListener('click', () => {
+      if(timerRunning){ stopTimer(); startBtn.textContent = '▶ Démarrer'; return; }
+      timerRunning = true; startBtn.textContent = '⏸ Pause';
+      timerHandle = setInterval(() => {
+        timerLeft--;
+        if(timerLeft <= 0){ timerLeft = 0; disp.textContent = formatT(0); stopTimer(); startBtn.textContent = '▶ Démarrer'; beep(); return; }
+        disp.textContent = formatT(timerLeft);
+      }, 1000);
+    });
+    resetBtn.addEventListener('click', () => {
+      stopTimer(); timerLeft = seconds; disp.textContent = formatT(timerLeft); startBtn.textContent = '▶ Démarrer';
+    });
+  }
+
+  function render(){
+    const step = STEPS[idx];
+    document.getElementById('hStep').textContent = `Étape ${idx+1} / ${STEPS.length}`;
+    document.getElementById('progFill').style.width = Math.round((idx)/(STEPS.length-1)*100) + '%';
+    const dots = document.getElementById('dots');
+    dots.innerHTML = STEPS.map((_,i)=>`<i class="${i===idx?'on':''}"></i>`).join('');
+    document.getElementById('prevBtn').disabled = idx === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.disabled = false;
+    nextBtn.textContent = idx === STEPS.length-1 ? 'Terminer ✓' : 'Suivant ▶';
+
+    const stage = document.getElementById('stage');
+    let html = '';
+
+    if(step.kind === 'title'){
+      html = `
+        <div class="stepicon">💨</div>
+        <div class="steptitle">L'air, ce truc invisible</div>
+        <div class="stepsub">Séance 7 · Les P'tits Chimistes · groupe de 15 (CP→CM2) · 60 minutes</div>
+        <div class="card"><h3>Ce que les enfants vont apprendre</h3>
+          <ul style="margin:0;padding-left:18px;font-size:14.5px;font-weight:600;line-height:1.7;">
+            <li>L'air existe, même si on ne le voit pas</li>
+            <li>L'air prend de la place</li>
+            <li>Quand l'air sort, l'eau prend sa place</li>
+          </ul>
+        </div>
+        <div class="card"><h3>La démarche</h3>
+          <p style="margin:0;font-size:14.5px;font-weight:600;line-height:1.5;">Pour chaque expérience : « Je pense » (hypothèse) → « Je vois » (observation) → « Je comprends » (conclusion). À la fin, les enfants comparent avec leurs idées du départ.</p>
+        </div>
+        <div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">♻️ Zéro achat</span>Gobelets, essuie-tout, entonnoir, bouteilles, pâte à modeler, éponge et les 2 bacs : tout est déjà en stock.</div>
+        <div class="vocab"><span>Air</span><span>Gaz</span><span>Bulle</span><span>Preuve</span><span>Prendre de la place</span><span>Hypothèse</span></div>
+        <button class="bigbtn" id="startBtn" type="button">C'est parti ▶</button>
+      `;
+    } else if(step.kind === 'info'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${step.timer ? renderTimerBlock(step.timer) : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'checklist'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="card"><h3>À cocher au fur et à mesure</h3>
+          <div class="checklist">
+            ${step.items.map((it,i)=>{
+              const key = idx+'-'+i;
+              const done = !!checklistState[key];
+              return `<div class="citem ${done?'done':''}" data-key="${key}"><span class="box">${done?'✓':''}</span><span class="txt">${escapeHtml(it)}</span></div>`;
+            }).join('')}
+          </div>
+        </div>
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'vote'){
+      const picked = voteCounts[idx];
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>
+        <div class="card">
+          <h3>Vote à main levée</h3>
+          <div class="vote">
+            ${step.options.map((o,i)=>`<button type="button" data-vote="${i}" class="${picked===i?'picked':''}">${escapeHtml(o)}</button>`).join('')}
+          </div>
+        </div>
+        ${step.note ? `<div class="say" style="border-color:var(--good);"><span class="lbl" style="color:var(--good);">💡 Astuce</span>${escapeHtml(step.note)}</div>` : ''}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'timer'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${renderSayAndList(step)}
+        ${renderTimerBlock(step.seconds)}
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'retenir'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        ${step.say ? `<div class="say"><span class="lbl">🗣️ À dire aux enfants</span>${escapeHtml(step.say)}</div>` : ''}
+        <div class="retenir">
+          ${step.points.map((p,i)=>`<div class="r"><span class="n">${i+1}</span><span class="t">${escapeHtml(p.t)}<span class="p">${escapeHtml(p.p)}</span></span></div>`).join('')}
+        </div>
+        ${renderMemo(step)}
+      `;
+    } else if(step.kind === 'quiz'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        ${step.sub ? `<div class="stepsub">${escapeHtml(step.sub)}</div>` : ''}
+        <div class="scoretag" id="scoreTag"></div>
+        <div id="quizList" style="display:flex;flex-direction:column;gap:18px;"></div>
+      `;
+    } else if(step.kind === 'vocabend'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="stepsub">Vous êtes maintenant de vrais chercheurs de l'air !</div>
+        <div class="vocab"><span>Air</span><span>Gaz</span><span>Bulle</span><span>Preuve</span><span>Prendre de la place</span><span>Hypothèse</span></div>
+      `;
+    } else if(step.kind === 'end'){
+      html = `
+        <div class="stepicon">${step.icon}</div>
+        <div class="steptitle">${escapeHtml(step.title)}</div>
+        <div class="card"><p style="margin:0;font-size:15px;font-weight:700;text-align:center;">${escapeHtml(step.teaser)}</p></div>
+      `;
+    }
+
+    stage.innerHTML = html;
+
+    if(step.kind === 'title'){
+      document.getElementById('startBtn').addEventListener('click', () => go(idx+1));
+    }
+    if(step.kind === 'checklist'){
+      stage.querySelectorAll('.citem').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.dataset.key;
+          checklistState[key] = !checklistState[key];
+          el.classList.toggle('done', !!checklistState[key]);
+          el.querySelector('.box').textContent = checklistState[key] ? '✓' : '';
+        });
+      });
+    }
+    if(step.kind === 'vote'){
+      stage.querySelectorAll('[data-vote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          voteCounts[idx] = parseInt(btn.dataset.vote,10);
+          stage.querySelectorAll('[data-vote]').forEach(b => b.classList.toggle('picked', b===btn));
+        });
+      });
+    }
+    if((step.kind === 'info' && step.timer) || step.kind === 'timer'){
+      wireTimer(step.kind==='timer' ? step.seconds : step.timer);
+    }
+    if(step.kind === 'quiz'){
+      renderQuiz(step);
+    }
+    wireVocab(stage);
+
+    saveStep();
+  }
+
+  function renderQuiz(step){
+    const list = document.getElementById('quizList');
+    function updateScore(){
+      const answered = quizState.filter(v=>v!==null).length;
+      const correct = quizState.filter((v,i)=>v===step.questions[i].correct).length;
+      document.getElementById('scoreTag').textContent = `Score : ${correct} / ${answered || step.questions.length} bonnes réponses`;
+    }
+    list.innerHTML = step.questions.map((q,qi) => `
+      <div class="card">
+        <div class="quizq">${qi+1}. ${escapeHtml(q.q)}</div>
+        <div class="quizopts" data-qi="${qi}">
+          ${q.options.map((o,oi)=>`<button type="button" class="qopt" data-oi="${oi}">${escapeHtml(o)}</button>`).join('')}
+        </div>
+        <div class="qexplain" id="explain-${qi}">${escapeHtml(q.explain)}</div>
+      </div>
+    `).join('');
+    step.questions.forEach((q, qi) => {
+      const group = list.querySelector(`.quizopts[data-qi="${qi}"]`);
+      const already = quizState[qi];
+      if(already !== null){
+        group.querySelectorAll('.qopt').forEach((b,oi) => {
+          b.disabled = true;
+          if(oi === q.correct) b.classList.add('correct');
+          if(oi === already && already !== q.correct) b.classList.add('wrong');
+        });
+        document.getElementById(`explain-${qi}`).classList.add('show');
+      }
+      group.querySelectorAll('.qopt').forEach((btn, oi) => {
+        btn.addEventListener('click', () => {
+          if(quizState[qi] !== null) return;
+          quizState[qi] = oi;
+          group.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+          btn.classList.add(oi === q.correct ? 'correct' : 'wrong');
+          if(oi !== q.correct) group.children[q.correct].classList.add('correct');
+          document.getElementById(`explain-${qi}`).classList.add('show');
+          if(oi === q.correct) beep();
+          updateScore();
+        });
+      });
+    });
+    updateScore();
+  }
+
+  function go(n){
+    stopTimer();
+    closePopover();
+    idx = Math.max(0, Math.min(STEPS.length-1, n));
+    render();
+    document.getElementById('stage').scrollIntoView({block:'start'});
+    window.scrollTo(0,0);
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => go(idx-1));
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if(idx === STEPS.length-1){ window.location.href = 'index.html'; return; }
+    go(idx+1);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
